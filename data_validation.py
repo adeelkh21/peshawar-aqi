@@ -193,14 +193,25 @@ class DataValidator:
 
     def _check_timestamp_gaps(self, df: pd.DataFrame) -> Dict:
         """Check for gaps in timestamp sequence"""
-        df = df.sort_values('timestamp')
-        time_diff = df['timestamp'].diff()
-        
-        return {
-            'max_gap_hours': time_diff.max().total_seconds() / 3600,
-            'avg_gap_hours': time_diff.mean().total_seconds() / 3600,
-            'gaps_over_1h': (time_diff > pd.Timedelta(hours=1)).sum()
-        }
+        try:
+            # Ensure timestamp is datetime
+            if not pd.api.types.is_datetime64_any_dtype(df['timestamp']):
+                df = df.copy()
+                df['timestamp'] = pd.to_datetime(df['timestamp'])
+            
+            df = df.sort_values('timestamp')
+            time_diff = df['timestamp'].diff()
+            
+            return {
+                'max_gap_hours': time_diff.max().total_seconds() / 3600,
+                'avg_gap_hours': time_diff.mean().total_seconds() / 3600,
+                'gaps_over_1h': (time_diff > pd.Timedelta(hours=1)).sum()
+            }
+        except Exception as e:
+            print(f"Error in _check_timestamp_gaps: {str(e)}")
+            print("Timestamp column type:", df['timestamp'].dtype)
+            print("Sample timestamps:", df['timestamp'].head())
+            raise
 
     def _check_value_consistency(self, df: pd.DataFrame) -> Dict:
         """Check for value consistency and relationships"""

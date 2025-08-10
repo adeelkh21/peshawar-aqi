@@ -95,6 +95,17 @@ jobs:
             
             # Load and validate data
             df = pd.read_csv(data_file)
+            
+            # Convert timestamp to datetime
+            df['timestamp'] = pd.to_datetime(df['timestamp'])
+            
+            print("\nData Preview:")
+            print("=============")
+            print("First few rows:")
+            print(df.head())
+            print("\nData Types:")
+            print(df.dtypes)
+            
             validator = DataValidator()
             is_valid, report = validator.validate_merged_data(df)
             
