@@ -89,6 +89,41 @@ def merge_all_data():
                 how='inner'
             )
             
+            # Calculate AQI values
+            def calculate_aqi(concentration, breakpoints):
+                """Calculate AQI value given concentration and breakpoint table"""
+                for _, (low_conc, high_conc, low_aqi, high_aqi) in breakpoints.items():
+                    if low_conc <= concentration <= high_conc:
+                        return np.interp(concentration, [low_conc, high_conc], [low_aqi, high_aqi])
+                return 500  # Maximum AQI value
+
+            # PM2.5 breakpoints (μg/m³) and corresponding AQI values
+            pm25_breakpoints = {
+                'Good': (0.0, 12.0, 0, 50),
+                'Moderate': (12.1, 35.4, 51, 100),
+                'Unhealthy for Sensitive Groups': (35.5, 55.4, 101, 150),
+                'Unhealthy': (55.5, 150.4, 151, 200),
+                'Very Unhealthy': (150.5, 250.4, 201, 300),
+                'Hazardous': (250.5, 500.4, 301, 500)
+            }
+            
+            # PM10 breakpoints (μg/m³) and corresponding AQI values
+            pm10_breakpoints = {
+                'Good': (0, 54, 0, 50),
+                'Moderate': (55, 154, 51, 100),
+                'Unhealthy for Sensitive Groups': (155, 254, 101, 150),
+                'Unhealthy': (255, 354, 151, 200),
+                'Very Unhealthy': (355, 424, 201, 300),
+                'Hazardous': (425, 604, 301, 500)
+            }
+
+            # Calculate AQI based on both PM2.5 and PM10
+            merged_data['aqi_pm25'] = merged_data['pm2_5'].apply(lambda x: calculate_aqi(x, pm25_breakpoints))
+            merged_data['aqi_pm10'] = merged_data['pm10'].apply(lambda x: calculate_aqi(x, pm10_breakpoints))
+            
+            # Final AQI is the maximum of PM2.5 and PM10 AQI values
+            merged_data['aqi_numeric'] = merged_data[['aqi_pm25', 'aqi_pm10']].max(axis=1)
+
             # Add time-based features
             merged_data['hour'] = merged_data['timestamp'].dt.hour
             merged_data['day'] = merged_data['timestamp'].dt.day
