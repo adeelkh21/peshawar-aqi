@@ -1,0 +1,65 @@
+name: Data Collection Pipeline
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Run every hour
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  collect_data:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run data collection
+      env:
+        OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
+      run: |
+        python data_collection.py
+    
+    - name: Upload data artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: collected-data
+        path: data/
+    
+    - name: Check data quality
+      run: |
+        python -c "
+        import pandas as pd
+        import sys
+        from data_validation import DataValidator
+        
+        # Load the latest data
+        df = pd.read_csv('data/processed/merged_data.csv')
+        validator = DataValidator()
+        is_valid, report = validator.validate_merged_data(df)
+        
+        if not is_valid:
+            print('Data validation failed!')
+            print(report)
+            sys.exit(1)
+        "
+    
+    - name: Notify on failure
+      if: failure()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const issue = await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: 'Data Collection Pipeline Failed',
+            body: `Pipeline failed on ${new Date().toISOString()}\n\nCheck the [workflow run](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for details.`
+          });
