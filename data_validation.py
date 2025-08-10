@@ -175,18 +175,55 @@ class DataValidator:
             'unique_values': df.nunique().to_dict()
         }
         
+        # Define optional fields that can be missing
+        optional_fields = {'snow', 'wpgt', 'tsun'}
+        
+        # Check missing rates excluding optional fields
+        missing_rates = {k: v for k, v in report['quality_metrics']['missing_rate'].items() 
+                        if k not in optional_fields}
+        
         # Determine if data is valid
         is_valid = (
+            # Data completeness checks
             report['completeness']['coverage_ratio'] >= 0.95 and  # At least 95% coverage
             report['consistency']['timestamp_gaps']['max_gap_hours'] <= 3 and  # No gaps > 3 hours
-            all(v <= 0.05 for v in report['quality_metrics']['missing_rate'].values())  # Max 5% missing values
+            
+            # Missing value checks (excluding optional fields)
+            all(v <= 0.05 for k, v in missing_rates.items()) and  # Max 5% missing values
+            
+            # Core field checks
+            report['quality_metrics']['missing_rate']['aqi_numeric'] == 0 and  # No missing AQI
+            report['quality_metrics']['missing_rate']['temperature'] <= 0.1 and  # Max 10% missing temp
+            report['quality_metrics']['missing_rate']['relative_humidity'] <= 0.1 and  # Max 10% missing humidity
+            
+            # Data consistency checks
+            report['consistency']['value_consistency']['aqi_consistency'] and  # AQI calculations consistent
+            len(report['quality_metrics']['unique_values']) >= 20  # At least 20 unique values
         )
+        
+        # Generate validation status details
+        validation_status = {
+            'completeness': report['completeness']['coverage_ratio'] >= 0.95,
+            'timestamp_continuity': report['consistency']['timestamp_gaps']['max_gap_hours'] <= 3,
+            'missing_values': all(v <= 0.05 for k, v in missing_rates.items()),
+            'aqi_complete': report['quality_metrics']['missing_rate']['aqi_numeric'] == 0,
+            'temperature_complete': report['quality_metrics']['missing_rate']['temperature'] <= 0.1,
+            'humidity_complete': report['quality_metrics']['missing_rate']['relative_humidity'] <= 0.1,
+            'aqi_consistent': report['consistency']['value_consistency']['aqi_consistency'],
+            'sufficient_variation': len(report['quality_metrics']['unique_values']) >= 20
+        }
         
         if not is_valid:
             logger.warning("Merged data validation failed")
-            logger.warning(f"Validation report: {report}")
+            logger.warning("Validation Status:")
+            for check, passed in validation_status.items():
+                logger.warning(f"  {check}: {'✅' if passed else '❌'}")
+            logger.warning(f"Full report: {report}")
         else:
             logger.info("Merged data validation passed")
+            logger.info("All validation checks passed:")
+            for check in validation_status.keys():
+                logger.info(f"  ✅ {check}")
             logger.info(f"Data quality metrics: {report['quality_metrics']}")
         
         return is_valid, report

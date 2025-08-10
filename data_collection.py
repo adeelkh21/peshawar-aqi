@@ -37,7 +37,7 @@ load_dotenv()
 # Configuration
 PESHAWAR_LAT = 34.0083
 PESHAWAR_LON = 71.5189
-OPENWEATHER_API_KEY = os.getenv('OPENWEATHER_API_KEY')
+OPENWEATHER_API_KEY = os.getenv('OPENWEATHER_API_KEY', "86e22ef485ce8beb1a30ba654f6c2d5a")
 COLLECTION_DAYS = 1  # Collect last 24 hours for hourly updates
 
 class DataCollector:
