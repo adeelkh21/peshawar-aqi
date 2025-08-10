@@ -37,7 +37,17 @@ load_dotenv()
 # Configuration
 PESHAWAR_LAT = 34.0083
 PESHAWAR_LON = 71.5189
-OPENWEATHER_API_KEY = os.getenv('OPENWEATHER_API_KEY', "86e22ef485ce8beb1a30ba654f6c2d5a")
+
+# Get API key with fallback
+OPENWEATHER_API_KEY = os.getenv('OPENWEATHER_API_KEY')
+if not OPENWEATHER_API_KEY:
+    print("⚠️ Warning: OPENWEATHER_API_KEY not found in environment, using default key")
+    OPENWEATHER_API_KEY = "86e22ef485ce8beb1a30ba654f6c2d5a"
+
+# Validate API key format
+if not OPENWEATHER_API_KEY or len(OPENWEATHER_API_KEY) != 32:
+    raise ValueError(f"Invalid OpenWeatherMap API key format: {OPENWEATHER_API_KEY}")
+
 COLLECTION_DAYS = 1  # Collect last 24 hours for hourly updates
 
 class DataCollector:
@@ -154,11 +164,12 @@ class DataCollector:
                 day_end = day_start + 86399  # Full day minus 1 second
                 
                 url = (
-                    f"http://api.openweathermap.org/data/2.5/air_pollution/history?"
+                    f"https://api.openweathermap.org/data/2.5/air_pollution/history?"
                     f"lat={PESHAWAR_LAT}&lon={PESHAWAR_LON}&"
                     f"start={day_start}&end={day_end}&"
                     f"appid={OPENWEATHER_API_KEY}"
                 )
+                print(f"Debug - API URL: {url}")
                 
                 try:
                     response = requests.get(url, timeout=10)
@@ -174,6 +185,9 @@ class DataCollector:
                             results.append(record)
                     else:
                         print(f"   ⚠️ Warning: Failed day {day+1}, status: {response.status_code}")
+                        print(f"   Response: {response.text}")
+                        if response.status_code == 401:
+                            print(f"   API Key being used: {OPENWEATHER_API_KEY}")
                         
                     time.sleep(1.1)  # Rate limiting
                     
