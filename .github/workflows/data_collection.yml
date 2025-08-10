@@ -10,47 +10,94 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: '3.10'
+        cache: 'pip'
     
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     
+    - name: Create data directories
+      run: |
+        mkdir -p data/raw
+        mkdir -p data/processed
+        mkdir -p data/logs
+    
     - name: Run data collection
       env:
         OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
       run: |
         python data_collection.py
+      continue-on-error: true
+    
+    - name: Check for data files
+      run: |
+        if [ ! -d "data" ]; then
+          echo "Data directory not found!"
+          exit 1
+        fi
+        echo "Contents of data directory:"
+        ls -R data/
     
     - name: Upload data artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
+      if: always()
       with:
         name: collected-data
-        path: data/
+        path: |
+          data/
+          *.log
+        retention-days: 7
     
     - name: Check data quality
+      if: success()
       run: |
-        python -c "
+        python - <<EOF
         import pandas as pd
         import sys
+        import glob
+        import os
         from data_validation import DataValidator
-        
-        # Load the latest data
-        df = pd.read_csv('data/processed/merged_data.csv')
-        validator = DataValidator()
-        is_valid, report = validator.validate_merged_data(df)
-        
-        if not is_valid:
-            print('Data validation failed!')
+
+        try:
+            # Find the latest data file
+            processed_dirs = glob.glob('data/*/processed')
+            if not processed_dirs:
+                print("No processed data directories found!")
+                sys.exit(1)
+                
+            latest_dir = max(processed_dirs, key=os.path.getctime)
+            data_file = os.path.join(latest_dir, 'merged_data.csv')
+            
+            if not os.path.exists(data_file):
+                print(f"Data file not found: {data_file}")
+                sys.exit(1)
+            
+            # Load and validate data
+            df = pd.read_csv(data_file)
+            validator = DataValidator()
+            is_valid, report = validator.validate_merged_data(df)
+            
+            print("\nValidation Report:")
+            print("==================")
+            print(f"Records: {len(df)}")
+            print(f"Validation Status: {'✅ Passed' if is_valid else '❌ Failed'}")
+            print("\nDetailed Report:")
             print(report)
+            
+            if not is_valid:
+                sys.exit(1)
+                
+        except Exception as e:
+            print(f"Error during validation: {str(e)}")
             sys.exit(1)
-        "
+        EOF
     
     - name: Notify on failure
       if: failure()
