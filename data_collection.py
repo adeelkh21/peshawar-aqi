@@ -42,7 +42,7 @@ PESHAWAR_LON = 71.5189
 OPENWEATHER_API_KEY = os.getenv('OPENWEATHER_API_KEY')
 if not OPENWEATHER_API_KEY:
     print("⚠️ Warning: OPENWEATHER_API_KEY not found in environment, using default key")
-    OPENWEATHER_API_KEY = "1d4a71330be2129b8a935e7600e4bbe7"  # New API key
+    OPENWEATHER_API_KEY = "86e22ef485ce8beb1a30ba654f6c2d5a"  # Original API key
 
 # Validate API key format
 if not OPENWEATHER_API_KEY or len(OPENWEATHER_API_KEY) != 32:
@@ -164,11 +164,9 @@ class DataCollector:
                 day_end = day_start + 86399  # Full day minus 1 second
                 
                 url = (
-                    f"https://api.openweathermap.org/data/2.5/air_pollution/history?"
-                    f"lat={PESHAWAR_LAT}&"
-                    f"lon={PESHAWAR_LON}&"
-                    f"start={day_start}&"
-                    f"end={day_end}&"
+                    f"http://api.openweathermap.org/data/2.5/air_pollution/history?"
+                    f"lat={PESHAWAR_LAT}&lon={PESHAWAR_LON}&"
+                    f"start={day_start}&end={day_end}&"
                     f"appid={OPENWEATHER_API_KEY}"
                 )
                 print(f"Debug - API URL: {url}")
