@@ -32,11 +32,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     
-    - name: Create data directories
+    - name: Create data repository directories
       run: |
-        mkdir -p data/raw
-        mkdir -p data/processed
-        mkdir -p data/logs
+        mkdir -p data_repositories/hourly_data/{raw,processed,metadata}
+        mkdir -p data_repositories/merged_data/{raw,processed,metadata}
     
     - name: Run data collection and merge
       env:
@@ -50,12 +49,12 @@ jobs:
     
     - name: Check for data files
       run: |
-        if [ ! -d "data" ]; then
-          echo "Data directory not found!"
+        if [ ! -d "data_repositories" ]; then
+          echo "Data repositories directory not found!"
           exit 1
         fi
-        echo "Contents of data directory:"
-        ls -R data/
+        echo "Contents of data repositories:"
+        ls -R data_repositories/
     
     - name: Upload data artifacts
       uses: actions/upload-artifact@v4
@@ -63,9 +62,8 @@ jobs:
       with:
         name: aqi-data-${{ github.run_number }}-${{ github.run_attempt }}
         path: |
-          data/raw/
-          data/processed/
-          data/metadata/
+          data_repositories/hourly_data/
+          data_repositories/merged_data/
         retention-days: 7
     
     - name: Check data quality
@@ -79,11 +77,11 @@ jobs:
 
         try:
             # Load the merged dataset
-            df = pd.read_csv('data/processed/merged_data.csv')
+            df = pd.read_csv('data_repositories/merged_data/processed/merged_data.csv')
             df['timestamp'] = pd.to_datetime(df['timestamp'])
             
             # Load metadata
-            with open('data/metadata/dataset_info.json', 'r') as f:
+            with open('data_repositories/merged_data/metadata/dataset_info.json', 'r') as f:
                 metadata = json.load(f)
             
             print("\n📊 Dataset Overview:")

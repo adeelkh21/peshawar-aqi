@@ -2,10 +2,10 @@
 AQI Prediction System - Historical Data Collection
 ===============================================
 
-This script performs a one-time collection of 150 days historical data:
+This script collects 150 days of historical weather and pollution data:
 - Weather data from Meteostat API
 - Pollution data from OpenWeatherMap API
-- Stores data in a separate historical data directory
+- Saves to a separate historical data repository
 """
 
 import os
@@ -25,7 +25,7 @@ warnings.filterwarnings('ignore')
 PESHAWAR_LAT = 34.0083
 PESHAWAR_LON = 71.5189
 OPENWEATHER_API_KEY = "86e22ef485ce8beb1a30ba654f6c2d5a"
-COLLECTION_DAYS = 150
+COLLECTION_DAYS = 150  # Collect 150 days of historical data
 
 class HistoricalDataCollector:
     def __init__(self):
@@ -37,8 +37,11 @@ class HistoricalDataCollector:
         self.end_date = datetime.now()
         self.start_date = self.end_date - timedelta(days=COLLECTION_DAYS)
         
-        # Create historical data directory
-        self.data_dir = os.path.join("data", "historical", f"collection_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
+        # Create directories in historical data repository
+        self.collection_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        self.data_dir = os.path.join("data_repositories", "historical_data")
+        
+        # Create required directories
         os.makedirs(os.path.join(self.data_dir, "raw"), exist_ok=True)
         os.makedirs(os.path.join(self.data_dir, "processed"), exist_ok=True)
         os.makedirs(os.path.join(self.data_dir, "metadata"), exist_ok=True)
@@ -46,7 +49,6 @@ class HistoricalDataCollector:
         print(f"📍 Location: Peshawar ({PESHAWAR_LAT}, {PESHAWAR_LON})")
         print(f"📅 Period: {self.start_date.date()} to {self.end_date.date()}")
         print(f"⏰ Duration: {COLLECTION_DAYS} days")
-        print(f"📂 Data Directory: {self.data_dir}")
 
     def fetch_weather_data(self):
         """Fetch historical weather data from Meteostat"""
@@ -80,14 +82,14 @@ class HistoricalDataCollector:
             
             # Save metadata
             metadata = {
-                "collection_date": datetime.now().isoformat(),
+                "timestamp": self.collection_timestamp,
                 "records": len(df),
                 "start_date": df['timestamp'].min(),
                 "end_date": df['timestamp'].max(),
                 "missing_values": df.isnull().sum().to_dict()
             }
             
-            metadata_file = os.path.join(self.data_dir, "metadata", "weather_metadata.json")
+            metadata_file = os.path.join(self.data_dir, "metadata", "historical_weather_metadata.json")
             with open(metadata_file, 'w') as f:
                 json.dump(metadata, f, indent=4, default=str)
             
@@ -101,96 +103,60 @@ class HistoricalDataCollector:
             return None
 
     def fetch_pollution_data(self):
-        """Fetch historical pollution data from OpenWeatherMap"""
+        """Fetch historical pollution data from OpenWeatherMap API"""
         print("\n🏭 Fetching Historical Pollution Data")
         print("-" * 40)
         
         try:
-            end_timestamp = int(self.end_date.timestamp())
-            start_timestamp = int(self.start_date.timestamp())
+            # Split into smaller time chunks to avoid API limits
+            chunk_size = timedelta(days=5)
+            current_start = self.start_date
+            all_results = []
             
-            results = []
-            retry_days = []
-            
-            print(f"📅 Collecting data from {self.start_date.date()} to {self.end_date.date()}")
-            
-            for day in range(COLLECTION_DAYS):
-                if day % 10 == 0:
-                    print(f"📦 Progress: {day+1}/{COLLECTION_DAYS} days ({(day+1)/COLLECTION_DAYS*100:.1f}%)")
+            while current_start < self.end_date:
+                current_end = min(current_start + chunk_size, self.end_date)
                 
-                day_start = start_timestamp + day * 86400
-                day_end = day_start + 86399
+                print(f"\n📅 Fetching chunk: {current_start.date()} to {current_end.date()}")
+                
+                start_timestamp = int(current_start.timestamp())
+                end_timestamp = int(current_end.timestamp())
                 
                 url = (
                     f"http://api.openweathermap.org/data/2.5/air_pollution/history?"
                     f"lat={PESHAWAR_LAT}&lon={PESHAWAR_LON}&"
-                    f"start={day_start}&end={day_end}&"
+                    f"start={start_timestamp}&end={end_timestamp}&"
                     f"appid={OPENWEATHER_API_KEY}"
                 )
                 
-                try:
-                    response = requests.get(url, timeout=15)
-                    
-                    if response.status_code == 200:
-                        data = response.json()
-                        for item in data.get('list', []):
-                            record = {
-                                "timestamp": datetime.utcfromtimestamp(item['dt']),
-                                "aqi_category": item['main']['aqi'],
-                                **item['components']
-                            }
-                            results.append(record)
-                    else:
-                        print(f"⚠️ Failed day {day+1}, status: {response.status_code}")
-                        if response.status_code == 429:  # Rate limit
-                            print("Rate limit hit, waiting 60 seconds...")
-                            time.sleep(60)
-                        retry_days.append(day)
-                    
-                    time.sleep(1.2)  # Rate limiting
-                    
-                except requests.exceptions.RequestException as e:
-                    print(f"⚠️ Network error on day {day+1}: {str(e)}")
-                    retry_days.append(day)
+                response = requests.get(url, timeout=10)
+                
+                if response.status_code != 200:
+                    print(f"❌ API request failed: {response.status_code}")
+                    print(f"Response: {response.text}")
+                    # Wait before retrying
+                    time.sleep(2)
+                    continue
+                
+                data = response.json()
+                
+                for item in data.get('list', []):
+                    record = {
+                        "timestamp": datetime.utcfromtimestamp(item['dt']),
+                        "aqi_category": item['main']['aqi'],
+                        **item['components']
+                    }
+                    all_results.append(record)
+                
+                # Move to next chunk
+                current_start = current_end
+                # Wait between chunks to respect API rate limits
+                time.sleep(1)
             
-            # Retry failed days
-            if retry_days:
-                print(f"\n🔄 Retrying {len(retry_days)} failed days...")
-                for day in retry_days:
-                    print(f"Retrying day {day+1}...")
-                    day_start = start_timestamp + day * 86400
-                    day_end = day_start + 86399
-                    
-                    try:
-                        time.sleep(2)  # Extra delay for retries
-                        response = requests.get(
-                            f"http://api.openweathermap.org/data/2.5/air_pollution/history?"
-                            f"lat={PESHAWAR_LAT}&lon={PESHAWAR_LON}&"
-                            f"start={day_start}&end={day_end}&"
-                            f"appid={OPENWEATHER_API_KEY}",
-                            timeout=15
-                        )
-                        
-                        if response.status_code == 200:
-                            data = response.json()
-                            for item in data.get('list', []):
-                                record = {
-                                    "timestamp": datetime.utcfromtimestamp(item['dt']),
-                                    "aqi_category": item['main']['aqi'],
-                                    **item['components']
-                                }
-                                results.append(record)
-                            print(f"✅ Successfully retrieved day {day+1}")
-                        else:
-                            print(f"❌ Failed to retrieve day {day+1} on retry")
-                    except requests.exceptions.RequestException as e:
-                        print(f"❌ Network error on retry for day {day+1}: {str(e)}")
-            
-            if not results:
+            if not all_results:
                 print("❌ No pollution data collected!")
                 return None
             
-            df = pd.DataFrame(results)
+            df = pd.DataFrame(all_results)
             df = df.sort_values('timestamp')
             
             # Save raw data
@@ -199,28 +165,19 @@ class HistoricalDataCollector:
             
             # Save metadata
             metadata = {
-                "collection_date": datetime.now().isoformat(),
+                "timestamp": self.collection_timestamp,
                 "records": len(df),
                 "start_date": df['timestamp'].min(),
                 "end_date": df['timestamp'].max(),
-                "missing_values": df.isnull().sum().to_dict(),
-                "retry_attempts": len(retry_days)
+                "missing_values": df.isnull().sum().to_dict()
             }
             
-            metadata_file = os.path.join(self.data_dir, "metadata", "pollution_metadata.json")
+            metadata_file = os.path.join(self.data_dir, "metadata", "historical_pollution_metadata.json")
             with open(metadata_file, 'w') as f:
                 json.dump(metadata, f, indent=4, default=str)
             
-            # Calculate collection statistics
-            total_hours = len(df)
-            expected_hours = COLLECTION_DAYS * 24
-            coverage = (total_hours / expected_hours) * 100
-            
-            print("\n📊 Collection Summary:")
-            print(f"✅ Records collected: {total_hours:,} out of {expected_hours:,} hours")
-            print(f"📈 Data coverage: {coverage:.1f}%")
-            print(f"🗓️ Date range: {df['timestamp'].min()} to {df['timestamp'].max()}")
-            print(f"📋 Features: {', '.join(df.columns)}")
+            print(f"\n✅ Historical pollution data collected: {len(df):,} records")
+            print(f"📊 Features: {', '.join(df.columns)}")
             
             return df
             
@@ -228,9 +185,9 @@ class HistoricalDataCollector:
             print(f"❌ Error fetching pollution data: {str(e)}")
             return None
 
-    def process_historical_data(self, weather_df, pollution_df):
-        """Process and merge historical data"""
-        print("\n🔄 Processing Historical Data")
+    def merge_and_process_data(self, weather_df, pollution_df):
+        """Merge historical weather and pollution data"""
+        print("\n🔄 Processing and Merging Historical Data")
         print("-" * 40)
         
         try:
@@ -242,7 +199,7 @@ class HistoricalDataCollector:
             weather_df['timestamp'] = weather_df['timestamp'].dt.floor('H')
             pollution_df['timestamp'] = pollution_df['timestamp'].dt.floor('H')
             
-            # Merge data
+            # Merge on timestamp
             df = pd.merge(
                 pollution_df,
                 weather_df,
@@ -263,7 +220,7 @@ class HistoricalDataCollector:
             
             # Save metadata
             metadata = {
-                "processing_date": datetime.now().isoformat(),
+                "timestamp": self.collection_timestamp,
                 "records": len(df),
                 "start_date": df['timestamp'].min(),
                 "end_date": df['timestamp'].max(),
@@ -271,7 +228,7 @@ class HistoricalDataCollector:
                 "missing_values": df.isnull().sum().to_dict()
             }
             
-            metadata_file = os.path.join(self.data_dir, "metadata", "processed_metadata.json")
+            metadata_file = os.path.join(self.data_dir, "metadata", "historical_merged_metadata.json")
             with open(metadata_file, 'w') as f:
                 json.dump(metadata, f, indent=4, default=str)
             
@@ -285,42 +242,44 @@ class HistoricalDataCollector:
             print(f"❌ Error processing data: {str(e)}")
             return None
 
-    def run_collection(self):
-        """Run historical data collection pipeline"""
-        print("\n🚀 Starting Historical Data Collection")
+    def run_pipeline(self):
+        """Run complete historical data collection pipeline"""
+        print("\n🚀 Starting Historical Data Collection Pipeline")
         print("=" * 50)
         
-        # Step 1: Fetch weather data
+        # Step 1: Fetch historical weather data
         weather_df = self.fetch_weather_data()
         if weather_df is None:
             return False
         
-        # Step 2: Fetch pollution data
+        # Step 2: Fetch historical pollution data
         pollution_df = self.fetch_pollution_data()
         if pollution_df is None:
             return False
         
         # Step 3: Process and merge data
-        final_df = self.process_historical_data(weather_df, pollution_df)
+        final_df = self.merge_and_process_data(weather_df, pollution_df)
         if final_df is None:
             return False
         
         print("\n✅ Historical Data Collection Completed Successfully!")
         print("=" * 50)
-        print("📁 Files saved in:")
-        print(f"   {self.data_dir}")
+        print("📁 Files saved:")
+        print(f"   - {os.path.join(self.data_dir, 'raw', 'historical_weather.csv')}")
+        print(f"   - {os.path.join(self.data_dir, 'raw', 'historical_pollution.csv')}")
+        print(f"   - {os.path.join(self.data_dir, 'processed', 'historical_merged.csv')}")
         
         return True
 
 def main():
-    """Run historical data collection"""
+    """Run historical data collection pipeline"""
     collector = HistoricalDataCollector()
-    success = collector.run_collection()
+    success = collector.run_pipeline()
     
     if success:
-        print("\n🎉 Historical data collection completed!")
+        print("\n🎉 Ready for feature engineering!")
     else:
-        print("\n❌ Historical data collection failed! Check error messages above.")
+        print("\n❌ Pipeline failed! Check error messages above.")
 
 if __name__ == "__main__":
     main()

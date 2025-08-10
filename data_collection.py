@@ -40,11 +40,11 @@ class DataCollector:
         self.end_date = datetime.now()
         self.start_date = self.end_date - timedelta(days=COLLECTION_DAYS)
         
-        # Create versioned data directories
+        # Create directories in hourly data repository
         self.collection_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        self.data_version = f"v1_{self.collection_timestamp}"
-        self.data_dir = os.path.join("data", self.data_version)
+        self.data_dir = os.path.join("data_repositories", "hourly_data")
         
+        # Create required directories
         os.makedirs(os.path.join(self.data_dir, "raw"), exist_ok=True)
         os.makedirs(os.path.join(self.data_dir, "processed"), exist_ok=True)
         os.makedirs(os.path.join(self.data_dir, "metadata"), exist_ok=True)
@@ -52,7 +52,7 @@ class DataCollector:
         print(f"📍 Location: Peshawar ({PESHAWAR_LAT}, {PESHAWAR_LON})")
         print(f"📅 Period: {self.start_date.date()} to {self.end_date.date()}")
         print(f"⏰ Duration: {COLLECTION_DAYS} days")
-        print(f"📂 Data Version: {self.data_version}")
+        print(f"📂 Data Directory: {self.data_dir}")
 
     def fetch_weather_data(self):
         """Fetch weather data from Meteostat"""

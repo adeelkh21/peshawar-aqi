@@ -22,21 +22,33 @@ def merge_all_data():
     print("🔄 Starting Data Merger")
     print("=" * 50)
     
-    # Create main data directories if they don't exist
-    main_dirs = ['data/raw', 'data/processed', 'data/metadata']
+    # Create merged data repository directories if they don't exist
+    main_dirs = [
+        os.path.join('data_repositories', 'merged_data', 'raw'),
+        os.path.join('data_repositories', 'merged_data', 'processed'),
+        os.path.join('data_repositories', 'merged_data', 'metadata')
+    ]
     for dir_path in main_dirs:
         os.makedirs(dir_path, exist_ok=True)
     
     try:
-        # Find all weather and pollution data files
-        weather_files = (
-            glob.glob('data/historical/*/raw/historical_weather.csv') +
-            glob.glob('data/v1_*/raw/weather_data.csv')
-        )
-        pollution_files = (
-            glob.glob('data/historical/*/raw/historical_pollution.csv') +
-            glob.glob('data/v1_*/raw/pollution_data.csv')
-        )
+        # Find all weather and pollution data files from both repositories
+        weather_files = [
+            # Historical data repository
+            os.path.join('data_repositories', 'historical_data', 'raw', 'historical_weather.csv'),
+            # Hourly data repository
+            os.path.join('data_repositories', 'hourly_data', 'raw', 'weather_data.csv')
+        ]
+        pollution_files = [
+            # Historical data repository
+            os.path.join('data_repositories', 'historical_data', 'raw', 'historical_pollution.csv'),
+            # Hourly data repository
+            os.path.join('data_repositories', 'hourly_data', 'raw', 'pollution_data.csv')
+        ]
+        
+        # Filter out non-existent files
+        weather_files = [f for f in weather_files if os.path.exists(f)]
+        pollution_files = [f for f in pollution_files if os.path.exists(f)]
         
         print(f"\n📂 Found {len(weather_files)} weather files and {len(pollution_files)} pollution files")
         
@@ -53,7 +65,7 @@ def merge_all_data():
             weather_data = weather_data.sort_values('timestamp')
             
             # Save consolidated weather data
-            weather_data.to_csv('data/raw/weather_data.csv', index=False)
+            weather_data.to_csv(os.path.join('data_repositories', 'merged_data', 'raw', 'weather_data.csv'), index=False)
             print(f"✅ Weather data merged: {len(weather_data):,} records")
         
         # Merge pollution data
@@ -69,7 +81,7 @@ def merge_all_data():
             pollution_data = pollution_data.sort_values('timestamp')
             
             # Save consolidated pollution data
-            pollution_data.to_csv('data/raw/pollution_data.csv', index=False)
+            pollution_data.to_csv(os.path.join('data_repositories', 'merged_data', 'raw', 'pollution_data.csv'), index=False)
             print(f"✅ Pollution data merged: {len(pollution_data):,} records")
         
         # Merge and process final dataset
@@ -133,7 +145,7 @@ def merge_all_data():
             merged_data['is_weekend'] = merged_data['day_of_week'].isin([5, 6]).astype(int)
             
             # Save processed data
-            merged_data.to_csv('data/processed/merged_data.csv', index=False)
+            merged_data.to_csv(os.path.join('data_repositories', 'merged_data', 'processed', 'merged_data.csv'), index=False)
             
             # Save metadata
             metadata = {
@@ -151,7 +163,7 @@ def merge_all_data():
                 "missing_values": merged_data.isnull().sum().to_dict()
             }
             
-            with open('data/metadata/dataset_info.json', 'w') as f:
+            with open(os.path.join('data_repositories', 'merged_data', 'metadata', 'dataset_info.json'), 'w') as f:
                 json.dump(metadata, f, indent=4, default=str)
             
             print("\n📊 Final Dataset Summary:")
@@ -159,32 +171,13 @@ def merge_all_data():
             print(f"Date range: {merged_data['timestamp'].min()} to {merged_data['timestamp'].max()}")
             print(f"Features: {len(merged_data.columns)}")
             
-            # Clean up old versioned directories
-            cleanup_old_data()
+            # Data from both repositories merged successfully
             
             return True
             
     except Exception as e:
         print(f"❌ Error merging data: {str(e)}")
         return False
-
-def cleanup_old_data():
-    """Remove old versioned directories after successful merge"""
-    try:
-        # Remove historical data directories
-        historical_dirs = glob.glob('data/historical/*/')
-        for dir_path in historical_dirs:
-            shutil.rmtree(dir_path)
-        
-        # Remove versioned directories
-        version_dirs = glob.glob('data/v1_*/')
-        for dir_path in version_dirs:
-            shutil.rmtree(dir_path)
-        
-        print("\n🧹 Cleaned up old data directories")
-        
-    except Exception as e:
-        print(f"⚠️ Warning: Error during cleanup: {str(e)}")
 
 def main():
     """Run data merger"""
@@ -193,14 +186,23 @@ def main():
     if success:
         print("\n✅ Data merger completed successfully!")
         print("📁 Final data structure:")
-        print("   data/")
-        print("   ├── raw/")
-        print("   │   ├── weather_data.csv")
-        print("   │   └── pollution_data.csv")
-        print("   ├── processed/")
-        print("   │   └── merged_data.csv")
-        print("   └── metadata/")
-        print("       └── dataset_info.json")
+        print("   data_repositories/")
+        print("   ├── hourly_data/")
+        print("   │   ├── raw/")
+        print("   │   │   ├── weather_data.csv")
+        print("   │   │   └── pollution_data.csv")
+        print("   │   ├── processed/")
+        print("   │   │   └── merged_data.csv")
+        print("   │   └── metadata/")
+        print("   │       └── dataset_info.json")
+        print("   └── merged_data/")
+        print("       ├── raw/")
+        print("       │   ├── weather_data.csv")
+        print("       │   └── pollution_data.csv")
+        print("       ├── processed/")
+        print("       │   └── merged_data.csv")
+        print("       └── metadata/")
+        print("           └── dataset_info.json")
     else:
         print("\n❌ Data merger failed! Check error messages above.")
 
