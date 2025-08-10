@@ -38,12 +38,15 @@ jobs:
         mkdir -p data/processed
         mkdir -p data/logs
     
-    - name: Run data collection
+    - name: Run data collection and merge
       env:
         OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
       run: |
+        # Run hourly collection
         python data_collection.py
-      continue-on-error: true
+        
+        # Merge with existing data
+        python merge_data.py
     
     - name: Check for data files
       run: |
@@ -58,10 +61,11 @@ jobs:
       uses: actions/upload-artifact@v4
       if: always()
       with:
-        name: collected-data-${{ github.run_number }}-${{ github.run_attempt }}
+        name: aqi-data-${{ github.run_number }}-${{ github.run_attempt }}
         path: |
-          data/
-          *.log
+          data/raw/
+          data/processed/
+          data/metadata/
         retention-days: 7
     
     - name: Check data quality
@@ -70,65 +74,35 @@ jobs:
         python - <<EOF
         import pandas as pd
         import sys
-        import glob
-        import os
+        import json
         from data_validation import DataValidator
 
-        def check_data_quality():
-            # List all files in data directory for debugging
-            print("Current directory contents:")
-            for root, dirs, files in os.walk('.'):
-                print(f"\nDirectory: {root}")
-                for f in files:
-                    print(f"  {f}")
-
-            # Find the latest data file
-            data_dirs = []
-            for root, dirs, files in os.walk('data'):
-                if 'processed' in dirs:
-                    data_dirs.append(os.path.join(root, 'processed'))
-            
-            if not data_dirs:
-                raise FileNotFoundError("No processed data directories found!")
-                
-            latest_dir = max(data_dirs, key=os.path.getctime)
-            data_file = os.path.join(latest_dir, 'merged_data.csv')
-            
-            if not os.path.exists(data_file):
-                raise FileNotFoundError(f"Data file not found: {data_file}")
-            
-            print(f"\nValidating data file: {data_file}")
-            
-            # Load and validate data
-            df = pd.read_csv(data_file)
-            
-            # Convert timestamp to datetime
+        try:
+            # Load the merged dataset
+            df = pd.read_csv('data/processed/merged_data.csv')
             df['timestamp'] = pd.to_datetime(df['timestamp'])
             
-            print("\nData Preview:")
-            print("=============")
-            print("First few rows:")
-            print(df.head())
-            print("\nData Types:")
-            print(df.dtypes)
+            # Load metadata
+            with open('data/metadata/dataset_info.json', 'r') as f:
+                metadata = json.load(f)
             
+            print("\n📊 Dataset Overview:")
+            print(f"Records: {len(df):,}")
+            print(f"Date Range: {df['timestamp'].min()} to {df['timestamp'].max()}")
+            print(f"Features: {', '.join(df.columns)}")
+            
+            # Validate data
             validator = DataValidator()
             is_valid, report = validator.validate_merged_data(df)
             
-            print("\nValidation Report:")
-            print("==================")
-            print(f"Records: {len(df)}")
-            print(f"Columns: {', '.join(df.columns)}")
-            print(f"Date Range: {df['timestamp'].min()} to {df['timestamp'].max()}")
-            print(f"Validation Status: {'✅ Passed' if is_valid else '❌ Failed'}")
+            print("\n🔍 Validation Results:")
+            print(f"Status: {'✅ Passed' if is_valid else '❌ Failed'}")
             print("\nDetailed Report:")
             print(report)
             
             if not is_valid:
                 raise ValueError("Data validation failed!")
-
-        try:
-            check_data_quality()
+                
         except Exception as e:
             print(f"\n❌ Error during validation: {str(e)}")
             sys.exit(1)
