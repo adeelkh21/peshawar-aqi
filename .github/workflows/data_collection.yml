@@ -8,6 +8,9 @@ on:
 jobs:
   collect_data:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     
     steps:
     - uses: actions/checkout@v4
@@ -65,19 +68,30 @@ jobs:
         import os
         from data_validation import DataValidator
 
-        try:
+        def check_data_quality():
+            # List all files in data directory for debugging
+            print("Current directory contents:")
+            for root, dirs, files in os.walk('.'):
+                print(f"\nDirectory: {root}")
+                for f in files:
+                    print(f"  {f}")
+
             # Find the latest data file
-            processed_dirs = glob.glob('data/*/processed')
-            if not processed_dirs:
-                print("No processed data directories found!")
-                sys.exit(1)
+            data_dirs = []
+            for root, dirs, files in os.walk('data'):
+                if 'processed' in dirs:
+                    data_dirs.append(os.path.join(root, 'processed'))
+            
+            if not data_dirs:
+                raise FileNotFoundError("No processed data directories found!")
                 
-            latest_dir = max(processed_dirs, key=os.path.getctime)
+            latest_dir = max(data_dirs, key=os.path.getctime)
             data_file = os.path.join(latest_dir, 'merged_data.csv')
             
             if not os.path.exists(data_file):
-                print(f"Data file not found: {data_file}")
-                sys.exit(1)
+                raise FileNotFoundError(f"Data file not found: {data_file}")
+            
+            print(f"\nValidating data file: {data_file}")
             
             # Load and validate data
             df = pd.read_csv(data_file)
@@ -87,15 +101,19 @@ jobs:
             print("\nValidation Report:")
             print("==================")
             print(f"Records: {len(df)}")
+            print(f"Columns: {', '.join(df.columns)}")
+            print(f"Date Range: {df['timestamp'].min()} to {df['timestamp'].max()}")
             print(f"Validation Status: {'✅ Passed' if is_valid else '❌ Failed'}")
             print("\nDetailed Report:")
             print(report)
             
             if not is_valid:
-                sys.exit(1)
-                
+                raise ValueError("Data validation failed!")
+
+        try:
+            check_data_quality()
         except Exception as e:
-            print(f"Error during validation: {str(e)}")
+            print(f"\n❌ Error during validation: {str(e)}")
             sys.exit(1)
         EOF
     
