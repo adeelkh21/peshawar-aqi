@@ -11,6 +11,7 @@ This script:
 
 import os
 import pandas as pd
+import numpy as np
 import glob
 from datetime import datetime
 import json
