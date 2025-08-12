@@ -1,0 +1,78 @@
+{
+    "collection_timestamp": "20250812_221309",
+    "weather_data": {
+        "records": 24,
+        "features": [
+            "timestamp",
+            "temperature",
+            "dew_point",
+            "relative_humidity",
+            "precipitation",
+            "snow",
+            "wind_direction",
+            "wind_speed",
+            "wpgt",
+            "pressure",
+            "tsun",
+            "coco"
+        ],
+        "date_range": {
+            "start": "2025-08-11T23:00:00",
+            "end": "2025-08-12T22:00:00"
+        }
+    },
+    "pollution_data": {
+        "records": 24,
+        "features": [
+            "timestamp",
+            "aqi_category",
+            "co",
+            "no",
+            "no2",
+            "o3",
+            "so2",
+            "pm2_5",
+            "pm10",
+            "nh3"
+        ],
+        "date_range": {
+            "start": "2025-08-11T23:00:00",
+            "end": "2025-08-12T22:00:00"
+        }
+    },
+    "merged_data": {
+        "records": 24,
+        "features": [
+            "timestamp",
+            "aqi_category",
+            "co",
+            "no",
+            "no2",
+            "o3",
+            "so2",
+            "pm2_5",
+            "pm10",
+            "nh3",
+            "temperature",
+            "dew_point",
+            "relative_humidity",
+            "precipitation",
+            "snow",
+            "wind_direction",
+            "wind_speed",
+            "wpgt",
+            "pressure",
+            "tsun",
+            "coco",
+            "hour",
+            "day",
+            "month",
+            "day_of_week",
+            "is_weekend"
+        ],
+        "date_range": {
+            "start": "2025-08-11T23:00:00",
+            "end": "2025-08-12T22:00:00"
+        }
+    }
+}
