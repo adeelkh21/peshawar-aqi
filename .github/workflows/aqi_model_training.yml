@@ -282,11 +282,11 @@ jobs:
         logger.info('🤖 Starting model training with incremental learning...')
         
         try:
-            # Load engineered features
-            df = pd.read_csv('data_repositories/features/engineered_features.csv')
-            logger.info(f'📊 Loaded engineered features: {len(df)} records, {len(df.columns)} features')
-            
-                         # Prepare features and target
+                         # Load engineered features
+             df = pd.read_csv('data_repositories/features/engineered_features.csv')
+             logger.info(f'📊 Loaded engineered features: {len(df)} records, {len(df.columns)} features')
+             
+             # Prepare features and target
              df['timestamp'] = pd.to_datetime(df['timestamp'])
              df = df.sort_values('timestamp')
              
@@ -340,10 +340,10 @@ jobs:
             
             with open(model_path, 'wb') as f:
                 pickle.dump(model, f)
-            with open(scaler_path, 'wb') as f:
-                pickle.dump(scaler, f)
-                
-                         # Save latest model for deployment
+                         with open(scaler_path, 'wb') as f:
+                 pickle.dump(scaler, f)
+                 
+             # Save latest model for deployment
              with open('deployment/latest_model.pkl', 'wb') as f:
                  pickle.dump(model, f)
              with open('deployment/latest_scaler.pkl', 'wb') as f:
@@ -416,11 +416,11 @@ jobs:
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
         
-        # Add model files and reports (force add to override .gitignore)
-        git add -f data_repositories/models/
-        git add -f deployment/
-        
-                          # Commit with timestamp
+                 # Add model files and reports (force add to override .gitignore)
+         git add -f data_repositories/models/
+         git add -f deployment/
+         
+         # Commit with timestamp
          git commit -m "🤖 Model retraining: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
          
          # Pull latest changes before pushing to avoid conflicts
