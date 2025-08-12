@@ -1,8 +1,8 @@
 {
-    "timestamp": "20250813_021144",
-    "records": 19,
-    "start_date": "2025-08-12T03:00:00",
-    "end_date": "2025-08-12T21:00:00",
+    "timestamp": "20250812_221554",
+    "records": 24,
+    "start_date": "2025-08-11T23:00:00",
+    "end_date": "2025-08-12T22:00:00",
     "features": [
         "timestamp",
         "aqi_category",
@@ -46,12 +46,12 @@
         "dew_point": 0,
         "relative_humidity": 0,
         "precipitation": 0,
-        "snow": 19,
+        "snow": 24,
         "wind_direction": 0,
         "wind_speed": 0,
-        "wpgt": 19,
+        "wpgt": 24,
         "pressure": 0,
-        "tsun": 19,
+        "tsun": 24,
         "coco": 0,
         "hour": 0,
         "day": 0,
@@ -59,7 +59,7 @@
         "day_of_week": 0,
         "is_weekend": 0
     },
-    "validation_status": false,
-    "validation_errors": 1,
+    "validation_status": true,
+    "validation_errors": 0,
     "validation_warnings": 0
 }
