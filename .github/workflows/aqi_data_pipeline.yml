@@ -139,6 +139,9 @@ jobs:
         # Commit with timestamp
         git commit -m "🔄 Hourly data collection: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
         
+        # Pull latest changes before pushing to avoid conflicts
+        git pull origin main --rebase || git pull origin main --allow-unrelated-histories
+        
         # Push to repository using GITHUB_TOKEN
         git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
         git push origin main
