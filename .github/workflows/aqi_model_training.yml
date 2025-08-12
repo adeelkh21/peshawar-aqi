@@ -286,11 +286,11 @@ jobs:
             df = pd.read_csv('data_repositories/features/engineered_features.csv')
             logger.info(f'📊 Loaded engineered features: {len(df)} records, {len(df.columns)} features')
             
-            # Prepare features and target
-            df['timestamp'] = pd.to_datetime(df['timestamp'])
-            df = df.sort_values('timestamp')
-            
-                         # Select features (exclude timestamp and target)
+                         # Prepare features and target
+             df['timestamp'] = pd.to_datetime(df['timestamp'])
+             df = df.sort_values('timestamp')
+             
+             # Select features (exclude timestamp and target)
              feature_cols = [col for col in df.columns if col not in ['timestamp', 'aqi_category']]
              X = df[feature_cols].select_dtypes(include=[np.number])
              y = df['aqi_category']
@@ -343,13 +343,13 @@ jobs:
             with open(scaler_path, 'wb') as f:
                 pickle.dump(scaler, f)
                 
-            # Save latest model for deployment
-            with open('deployment/latest_model.pkl', 'wb') as f:
-                pickle.dump(model, f)
-            with open('deployment/latest_scaler.pkl', 'wb') as f:
-                pickle.dump(scaler, f)
-                
-                         # Create evaluation report
+                         # Save latest model for deployment
+             with open('deployment/latest_model.pkl', 'wb') as f:
+                 pickle.dump(model, f)
+             with open('deployment/latest_scaler.pkl', 'wb') as f:
+                 pickle.dump(scaler, f)
+                 
+             # Create evaluation report
              evaluation_report = {
                  'timestamp': timestamp,
                  'training_date': datetime.now().isoformat(),
