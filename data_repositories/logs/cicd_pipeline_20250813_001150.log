@@ -1,0 +1,18 @@
+2025-08-13 00:11:50,036 - __main__ - INFO - CI/CD Pipeline initialized
+2025-08-13 00:11:50,047 - __main__ - INFO - Starting complete CI/CD pipeline
+2025-08-13 00:11:50,047 - __main__ - INFO - Starting data collection pipeline
+2025-08-13 00:11:50,047 - phase1_enhanced_data_collection - INFO - Starting enhanced data collection pipeline
+2025-08-13 00:11:50,047 - phase1_enhanced_data_collection - INFO - Starting weather data collection
+2025-08-13 00:11:50,123 - data_validation - INFO - Validation report saved to data_repositories\raw\metadata\weather_validation.json
+2025-08-13 00:11:50,123 - phase1_enhanced_data_collection - INFO - Weather data collected: 24 records
+2025-08-13 00:11:50,123 - phase1_enhanced_data_collection - INFO - Validation status: PASS
+2025-08-13 00:11:50,132 - phase1_enhanced_data_collection - INFO - Starting pollution data collection
+2025-08-13 00:11:50,756 - data_validation - INFO - Validation report saved to data_repositories\raw\metadata\pollution_validation.json
+2025-08-13 00:11:50,759 - phase1_enhanced_data_collection - INFO - Pollution data collected: 24 records
+2025-08-13 00:11:50,759 - phase1_enhanced_data_collection - INFO - Validation status: PASS
+2025-08-13 00:11:50,765 - phase1_enhanced_data_collection - INFO - Starting data processing and merging
+2025-08-13 00:11:50,787 - data_validation - INFO - Validation report saved to data_repositories\processed\validation_reports\merged_validation.json
+2025-08-13 00:11:50,790 - phase1_enhanced_data_collection - INFO - Data processing completed: 19 records
+2025-08-13 00:11:50,790 - phase1_enhanced_data_collection - INFO - Validation status: FAIL
+2025-08-13 00:11:50,796 - phase1_enhanced_data_collection - INFO - Enhanced data collection pipeline completed successfully
+2025-08-13 00:11:50,796 - __main__ - ERROR - Data collection pipeline error: 'DataValidator' object has no attribute 'validate_all_data'

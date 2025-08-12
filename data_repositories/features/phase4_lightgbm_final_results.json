@@ -1,0 +1,47 @@
+{
+    "timestamp": "2025-08-11T23:53:04.281918",
+    "phase": "Phase 4 - LightGBM Optimization",
+    "target_achieved": "True",
+    "champion_model": "LightGBM",
+    "performance": {
+        "lightgbm_basic": {
+            "train_r2": 0.9669047153747607,
+            "test_r2": 0.9092727313190906,
+            "test_mae": 4.885076496879518,
+            "test_rmse": 17.848781111834786,
+            "model_type": "LightGBM Basic",
+            "vs_xgboost": 0.016272731319090572
+        },
+        "lightgbm_optimized": {
+            "train_r2": 0.9823713570905719,
+            "test_r2": 0.9497041536744656,
+            "test_mae": 6.09405273709384,
+            "test_rmse": 13.289410156349788,
+            "model_type": "LightGBM Optimized",
+            "best_params": {
+                "reg_lambda": 0.1,
+                "reg_alpha": 0.1,
+                "num_leaves": 31,
+                "n_estimators": 200,
+                "min_child_samples": 30,
+                "learning_rate": 0.2,
+                "feature_fraction": 0.7,
+                "bagging_freq": 3,
+                "bagging_fraction": 0.7
+            },
+            "cv_score": 0.9781225044658145,
+            "improvement_vs_basic": 0.040431422355375,
+            "vs_xgboost": 0.056704153674465574
+        }
+    },
+    "summary": {
+        "lightgbm_r2": 0.9497041536744656,
+        "xgboost_r2": 0.893,
+        "target_r2": 0.75,
+        "target_exceeded": 0.1997041536744656,
+        "models_tested": [
+            "lightgbm_basic",
+            "lightgbm_optimized"
+        ]
+    }
+}

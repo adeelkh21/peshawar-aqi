@@ -1,0 +1,18 @@
+2025-08-13 00:12:18,580 - __main__ - INFO - CI/CD Pipeline initialized
+2025-08-13 00:12:18,604 - __main__ - INFO - Starting complete CI/CD pipeline
+2025-08-13 00:12:18,604 - __main__ - INFO - Starting data collection pipeline
+2025-08-13 00:12:18,604 - phase1_enhanced_data_collection - INFO - Starting enhanced data collection pipeline
+2025-08-13 00:12:18,604 - phase1_enhanced_data_collection - INFO - Starting weather data collection
+2025-08-13 00:12:18,646 - data_validation - INFO - Validation report saved to data_repositories\raw\metadata\weather_validation.json
+2025-08-13 00:12:18,649 - phase1_enhanced_data_collection - INFO - Weather data collected: 24 records
+2025-08-13 00:12:18,649 - phase1_enhanced_data_collection - INFO - Validation status: PASS
+2025-08-13 00:12:18,674 - phase1_enhanced_data_collection - INFO - Starting pollution data collection
+2025-08-13 00:12:19,446 - data_validation - INFO - Validation report saved to data_repositories\raw\metadata\pollution_validation.json
+2025-08-13 00:12:19,446 - phase1_enhanced_data_collection - INFO - Pollution data collected: 24 records
+2025-08-13 00:12:19,465 - phase1_enhanced_data_collection - INFO - Validation status: PASS
+2025-08-13 00:12:19,468 - phase1_enhanced_data_collection - INFO - Starting data processing and merging
+2025-08-13 00:12:19,479 - data_validation - INFO - Validation report saved to data_repositories\processed\validation_reports\merged_validation.json
+2025-08-13 00:12:19,482 - phase1_enhanced_data_collection - INFO - Data processing completed: 19 records
+2025-08-13 00:12:19,482 - phase1_enhanced_data_collection - INFO - Validation status: FAIL
+2025-08-13 00:12:19,488 - phase1_enhanced_data_collection - INFO - Enhanced data collection pipeline completed successfully
+2025-08-13 00:12:19,498 - __main__ - WARNING - Validation score 0.00 below threshold

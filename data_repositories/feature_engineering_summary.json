@@ -1,0 +1,37 @@
+{
+    "feature_timestamp": "20250813_021144",
+    "total_features": 266,
+    "total_records": 19,
+    "feature_categories": {
+        "temporal": 13,
+        "lag": 40,
+        "rolling": 162,
+        "interaction": 7,
+        "statistical": 4,
+        "original": 17
+    },
+    "validation_status": true,
+    "data_range": {
+        "start": "2025-08-12T03:00:00",
+        "end": "2025-08-12T21:00:00"
+    },
+    "feature_config": {
+        "rolling_windows": [
+            3,
+            6,
+            12,
+            24
+        ],
+        "lag_features": [
+            1,
+            2,
+            3,
+            6,
+            12,
+            24
+        ],
+        "temporal_features": true,
+        "interaction_features": true,
+        "statistical_features": true
+    }
+}

@@ -1,0 +1,2819 @@
+{
+    "weather": {
+        "feature_group": "aqi_weather",
+        "expectations": [
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "wind_speed"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "wind_speed",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pressure"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pressure",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_lag24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_lag24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_lag24h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_lag24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_lag24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_lag24h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "wind_speed_lag24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "wind_speed_lag24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pressure_lag24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pressure_lag24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_lag48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_lag48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_lag48h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_lag48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_lag48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_lag48h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pressure_lag48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pressure_lag48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_lag72h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_lag72h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_lag72h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_lag72h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_lag72h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_lag72h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pressure_lag72h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pressure_lag72h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_mean_6h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_mean_6h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_mean_6h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_mean_6h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_mean_6h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_mean_6h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_mean_12h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_mean_12h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_mean_12h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_mean_12h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_mean_12h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_mean_12h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_mean_24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_mean_24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_mean_24h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_mean_24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_mean_24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_mean_24h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm25_humidity_interaction"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm25_humidity_interaction",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm25_humidity_interaction",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_wind_interaction"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_wind_interaction",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_wind_interaction",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_q25_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_q25_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_q25_3h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_q75_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_q75_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_q75_3h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_min_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_min_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_min_3h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_max_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_max_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_max_3h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_q25_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_q25_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_q25_8h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_q75_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_q75_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_q75_8h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_min_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_min_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_min_8h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_max_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_max_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_max_8h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_q25_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_q25_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_q25_16h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_q75_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_q75_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_q75_16h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_min_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_min_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_min_16h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_max_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_max_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_max_16h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_q25_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_q25_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_q25_36h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_q75_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_q75_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_q75_36h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_min_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_min_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_min_36h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_max_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_max_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_max_36h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_q25_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_q25_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_q25_48h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_q75_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_q75_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_q75_48h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_min_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_min_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_min_48h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "temperature_rolling_max_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "temperature_rolling_max_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "temperature_rolling_max_48h",
+                "min_value": -50.0,
+                "max_value": 60.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_q25_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_q25_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_q25_3h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_q75_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_q75_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_q75_3h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_min_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_min_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_min_3h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_max_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_max_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_max_3h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_q25_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_q25_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_q25_8h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_q75_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_q75_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_q75_8h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_min_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_min_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_min_8h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_max_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_max_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_max_8h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_q25_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_q25_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_q25_16h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_q75_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_q75_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_q75_16h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_min_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_min_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_min_16h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_max_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_max_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_max_16h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_q25_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_q25_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_q25_36h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_q75_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_q75_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_q75_36h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_min_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_min_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_min_36h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_max_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_max_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_max_36h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_q25_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_q25_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_q25_48h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_q75_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_q75_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_q75_48h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_min_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_min_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_min_48h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "relative_humidity_rolling_max_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "relative_humidity_rolling_max_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "relative_humidity_rolling_max_48h",
+                "min_value": 0.0,
+                "max_value": 100.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pressure_tendency_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pressure_tendency_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pressure_tendency_6h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pressure_tendency_6h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "wind_chill"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "wind_chill",
+                "mostly": 0.9
+            }
+        ],
+        "feature_count": 65
+    },
+    "pollution": {
+        "feature_group": "aqi_pollution",
+        "expectations": [
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "no2"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "no2",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "no2",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "o3"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "o3",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "o3",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_lag24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_lag24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_lag24h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_lag24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_lag24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_lag24h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "no2_lag24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "no2_lag24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "no2_lag24h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "o3_lag24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "o3_lag24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "o3_lag24h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_lag1h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_lag1h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_lag3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_lag3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_lag6h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_lag6h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_lag6h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_lag6h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_lag6h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_lag48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_lag48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_lag48h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_lag48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_lag48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_lag48h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "no2_lag48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "no2_lag48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "no2_lag48h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "o3_lag48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "o3_lag48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "o3_lag48h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_lag48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_lag48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_lag72h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_lag72h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_lag72h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_lag72h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_lag72h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_lag72h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "no2_lag72h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "no2_lag72h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "no2_lag72h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "o3_lag72h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "o3_lag72h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "o3_lag72h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_lag72h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_lag72h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_mean_6h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_mean_6h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_mean_6h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_mean_6h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_mean_6h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_mean_6h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_mean_6h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_mean_6h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_mean_12h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_mean_12h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_mean_12h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_mean_12h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_mean_12h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_mean_12h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_mean_12h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_mean_12h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_mean_24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_mean_24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_mean_24h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_mean_24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_mean_24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_mean_24h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_mean_24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_mean_24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_std_12h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_std_12h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_std_12h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_std_12h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_std_12h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_std_12h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_std_12h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_std_12h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_std_24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_std_24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_std_24h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_std_24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_std_24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_std_24h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_std_24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_std_24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm25_pm10_ratio"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm25_pm10_ratio",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm25_pm10_ratio",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_lag2h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_lag2h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_lag2h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_lag4h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_lag4h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_lag4h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_lag8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_lag8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_lag8h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_lag12h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_lag12h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_lag12h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_lag18h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_lag18h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_lag18h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_lag36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_lag36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_lag36h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_lag60h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_lag60h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_lag60h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_lag2h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_lag2h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_lag2h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_lag4h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_lag4h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_lag4h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_lag8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_lag8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_lag8h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_lag12h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_lag12h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_lag12h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_lag18h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_lag18h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_lag18h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_lag36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_lag36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_lag36h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_lag60h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_lag60h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_lag60h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_lag2h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_lag2h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_lag4h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_lag4h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_lag8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_lag8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_lag12h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_lag12h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_lag18h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_lag18h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_lag36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_lag36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_lag60h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_lag60h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_q25_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_q25_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_q25_3h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_q75_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_q75_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_q75_3h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_min_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_min_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_min_3h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_max_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_max_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_max_3h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_q25_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_q25_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_q25_8h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_q75_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_q75_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_q75_8h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_min_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_min_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_min_8h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_max_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_max_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_max_8h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_q25_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_q25_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_q25_16h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_q75_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_q75_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_q75_16h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_min_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_min_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_min_16h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_max_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_max_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_max_16h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_q25_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_q25_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_q25_36h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_q75_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_q75_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_q75_36h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_min_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_min_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_min_36h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_max_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_max_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_max_36h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_q25_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_q25_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_q25_48h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_q75_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_q75_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_q75_48h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_min_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_min_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_min_48h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_rolling_max_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_rolling_max_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_rolling_max_48h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_q25_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_q25_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_q25_3h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_q75_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_q75_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_q75_3h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_min_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_min_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_min_3h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_max_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_max_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_max_3h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_q25_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_q25_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_q25_8h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_q75_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_q75_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_q75_8h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_min_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_min_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_min_8h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_max_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_max_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_max_8h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_q25_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_q25_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_q25_16h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_q75_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_q75_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_q75_16h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_min_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_min_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_min_16h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_max_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_max_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_max_16h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_q25_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_q25_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_q25_36h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_q75_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_q75_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_q75_36h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_min_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_min_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_min_36h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_max_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_max_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_max_36h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_q25_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_q25_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_q25_48h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_q75_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_q75_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_q75_48h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_min_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_min_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_min_48h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_rolling_max_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_rolling_max_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_rolling_max_48h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_q25_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_q25_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_q75_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_q75_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_min_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_min_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_max_3h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_max_3h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_q25_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_q25_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_q75_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_q75_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_min_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_min_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_max_8h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_max_8h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_q25_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_q25_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_q75_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_q75_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_min_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_min_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_max_16h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_max_16h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_q25_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_q25_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_q75_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_q75_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_min_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_min_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_max_36h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_max_36h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_q25_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_q25_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_q75_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_q75_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_min_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_min_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "aqi_numeric_rolling_max_48h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "aqi_numeric_rolling_max_48h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_cumulative_24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_cumulative_24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_cumulative_24h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm2_5_hours_above_mean_24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm2_5_hours_above_mean_24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm2_5_hours_above_mean_24h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_cumulative_24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_cumulative_24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_cumulative_24h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm10_hours_above_mean_24h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm10_hours_above_mean_24h",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_values_to_be_between",
+                "column": "pm10_hours_above_mean_24h",
+                "min_value": 0.0,
+                "max_value": 2000.0
+            }
+        ],
+        "feature_count": 123
+    },
+    "temporal": {
+        "feature_group": "aqi_temporal",
+        "expectations": [
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "hour"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "hour",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "day_of_week"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "day_of_week",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "is_weekend"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "is_weekend",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "hour_sin"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "hour_sin",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "hour_cos"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "hour_cos",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "dow_sin"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "dow_sin",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "dow_cos"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "dow_cos",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "month"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "month",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "season"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "season",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "day_of_year"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "day_of_year",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "doy_sin"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "doy_sin",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "doy_cos"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "doy_cos",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "hour_since_midnight"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "hour_since_midnight",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "is_peak_pollution_hour"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "is_peak_pollution_hour",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "is_low_pollution_hour"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "is_low_pollution_hour",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "is_rush_hour"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "is_rush_hour",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "is_business_hours"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "is_business_hours",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "hours_since_midnight"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "hours_since_midnight",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "hours_until_midnight"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "hours_until_midnight",
+                "mostly": 0.9
+            }
+        ],
+        "feature_count": 19
+    },
+    "lag_features": {
+        "feature_group": "aqi_lag_features",
+        "expectations": [
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm25_lag6h"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm25_lag6h",
+                "mostly": 0.9
+            }
+        ],
+        "feature_count": 1
+    },
+    "advanced_features": {
+        "feature_group": "aqi_advanced_features",
+        "expectations": [
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm25_temp_interaction"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm25_temp_interaction",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "heat_index"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "heat_index",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "is_morning_rush"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "is_morning_rush",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "is_evening_rush"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "is_evening_rush",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "pm25_dispersion"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "pm25_dispersion",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "stability_index"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "stability_index",
+                "mostly": 0.9
+            },
+            {
+                "expectation_type": "expect_column_to_exist",
+                "column": "coarse_particle_fraction"
+            },
+            {
+                "expectation_type": "expect_column_values_to_not_be_null",
+                "column": "coarse_particle_fraction",
+                "mostly": 0.9
+            }
+        ],
+        "feature_count": 7
+    }
+}

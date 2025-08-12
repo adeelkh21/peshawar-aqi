@@ -1,0 +1,58 @@
+2025-08-13 00:12:54,523 - __main__ - INFO - CI/CD Pipeline initialized
+2025-08-13 00:12:54,534 - __main__ - INFO - Starting complete CI/CD pipeline
+2025-08-13 00:12:54,534 - __main__ - INFO - Starting data collection pipeline
+2025-08-13 00:12:54,534 - phase1_enhanced_data_collection - INFO - Starting enhanced data collection pipeline
+2025-08-13 00:12:54,534 - phase1_enhanced_data_collection - INFO - Starting weather data collection
+2025-08-13 00:12:54,571 - data_validation - INFO - Validation report saved to data_repositories\raw\metadata\weather_validation.json
+2025-08-13 00:12:54,571 - phase1_enhanced_data_collection - INFO - Weather data collected: 24 records
+2025-08-13 00:12:54,571 - phase1_enhanced_data_collection - INFO - Validation status: PASS
+2025-08-13 00:12:54,605 - phase1_enhanced_data_collection - INFO - Starting pollution data collection
+2025-08-13 00:12:55,189 - data_validation - INFO - Validation report saved to data_repositories\raw\metadata\pollution_validation.json
+2025-08-13 00:12:55,194 - phase1_enhanced_data_collection - INFO - Pollution data collected: 24 records
+2025-08-13 00:12:55,194 - phase1_enhanced_data_collection - INFO - Validation status: PASS
+2025-08-13 00:12:55,196 - phase1_enhanced_data_collection - INFO - Starting data processing and merging
+2025-08-13 00:12:55,227 - data_validation - INFO - Validation report saved to data_repositories\processed\validation_reports\merged_validation.json
+2025-08-13 00:12:55,233 - phase1_enhanced_data_collection - INFO - Data processing completed: 19 records
+2025-08-13 00:12:55,234 - phase1_enhanced_data_collection - INFO - Validation status: FAIL
+2025-08-13 00:12:55,245 - phase1_enhanced_data_collection - INFO - Enhanced data collection pipeline completed successfully
+2025-08-13 00:12:55,267 - __main__ - INFO - Data collection pipeline completed
+2025-08-13 00:12:55,269 - __main__ - INFO - Starting feature engineering pipeline
+2025-08-13 00:12:55,269 - phase2_enhanced_feature_engineering - INFO - Starting enhanced feature engineering pipeline
+2025-08-13 00:12:55,278 - phase2_enhanced_feature_engineering - INFO - Loaded processed data: 19 records
+2025-08-13 00:12:55,280 - phase2_enhanced_feature_engineering - INFO - Creating temporal features
+2025-08-13 00:12:55,304 - phase2_enhanced_feature_engineering - INFO - Created 25 temporal features
+2025-08-13 00:12:55,305 - phase2_enhanced_feature_engineering - INFO - Creating lag features
+2025-08-13 00:12:55,342 - phase2_enhanced_feature_engineering - INFO - Created lag features for 8 base features
+2025-08-13 00:12:55,342 - phase2_enhanced_feature_engineering - INFO - Creating rolling features
+2025-08-13 00:12:55,475 - phase2_enhanced_feature_engineering - INFO - Created rolling features for 9 base features
+2025-08-13 00:12:55,475 - phase2_enhanced_feature_engineering - INFO - Creating interaction features
+2025-08-13 00:12:55,482 - phase2_enhanced_feature_engineering - INFO - Created interaction features
+2025-08-13 00:12:55,482 - phase2_enhanced_feature_engineering - INFO - Creating statistical features
+2025-08-13 00:12:55,487 - phase2_enhanced_feature_engineering - INFO - Created statistical features
+2025-08-13 00:12:55,489 - phase2_enhanced_feature_engineering - INFO - Validating engineered features
+2025-08-13 00:12:55,607 - phase2_enhanced_feature_engineering - INFO - Feature validation completed: True
+2025-08-13 00:12:55,607 - phase2_enhanced_feature_engineering - INFO - Saving engineered features
+2025-08-13 00:12:55,636 - data_validation - INFO - Validation report saved to data_repositories\features\validation\feature_validation.json
+2025-08-13 00:12:55,640 - phase2_enhanced_feature_engineering - INFO - Saved engineered features: 266 features, 19 records
+2025-08-13 00:12:55,643 - phase2_enhanced_feature_engineering - INFO - Enhanced feature engineering pipeline completed successfully
+2025-08-13 00:12:55,654 - __main__ - INFO - Feature engineering pipeline completed
+2025-08-13 00:12:55,654 - __main__ - INFO - Starting model training pipeline
+2025-08-13 00:12:55,657 - phase3_model_training_pipeline - INFO - Starting model training pipeline
+2025-08-13 00:12:55,657 - phase3_model_training_pipeline - INFO - Creating historical baseline dataset
+2025-08-13 00:12:56,343 - phase3_model_training_pipeline - INFO - Created historical baseline: 2850 records
+2025-08-13 00:12:56,346 - phase3_model_training_pipeline - INFO - Preparing training data
+2025-08-13 00:12:56,550 - phase3_model_training_pipeline - INFO - Prepared training data: 2850 samples, 264 features
+2025-08-13 00:12:56,563 - phase3_model_training_pipeline - INFO - Training LightGBM model
+2025-08-13 00:12:58,913 - phase3_model_training_pipeline - INFO - LightGBM training completed: RMSE=0.0000
+2025-08-13 00:12:58,913 - phase3_model_training_pipeline - INFO - Training XGBoost model
+2025-08-13 00:13:00,827 - phase3_model_training_pipeline - INFO - XGBoost training completed: RMSE=0.0000
+2025-08-13 00:13:00,842 - phase3_model_training_pipeline - INFO - Training Random Forest model
+2025-08-13 00:13:00,846 - phase3_model_training_pipeline - ERROR - Error training Random Forest model: Input X contains NaN.
+RandomForestRegressor does not accept missing values encoded as NaN natively. For supervised learning, you might want to consider sklearn.ensemble.HistGradientBoostingClassifier and Regressor which accept missing values encoded as NaNs natively. Alternatively, it is possible to preprocess the data, for instance by using an imputer transformer in a pipeline or drop samples with missing values. See https://scikit-learn.org/stable/modules/impute.html You can find a list of all estimators that handle NaN values at the following page: https://scikit-learn.org/stable/modules/impute.html#estimators-that-handle-nan-values
+2025-08-13 00:13:00,846 - phase3_model_training_pipeline - INFO - Selecting best model
+2025-08-13 00:13:00,846 - phase3_model_training_pipeline - INFO - Best model selected: lightgbm
+2025-08-13 00:13:00,857 - phase3_model_training_pipeline - INFO - Saving models and metadata
+2025-08-13 00:13:00,867 - phase3_model_training_pipeline - INFO - Models and metadata saved successfully
+2025-08-13 00:13:00,874 - phase3_model_training_pipeline - INFO - Model training pipeline completed successfully
+2025-08-13 00:13:00,882 - __main__ - INFO - Model training pipeline completed
+2025-08-13 00:13:00,882 - __main__ - INFO - Starting model optimization

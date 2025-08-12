@@ -1,0 +1,20 @@
+{
+    "timestamp": "20250813_013121",
+    "records": 3599,
+    "start_date": "2025-03-16 03:00:00",
+    "end_date": "2025-08-13 01:00:00",
+    "missing_values": {
+        "timestamp": 0,
+        "temperature": 177,
+        "dew_point": 177,
+        "relative_humidity": 177,
+        "precipitation": 249,
+        "snow": 3599,
+        "wind_direction": 177,
+        "wind_speed": 177,
+        "wpgt": 3599,
+        "pressure": 177,
+        "tsun": 3599,
+        "coco": 246
+    }
+}

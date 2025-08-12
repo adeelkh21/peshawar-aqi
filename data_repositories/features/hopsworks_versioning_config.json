@@ -1,0 +1,83 @@
+{
+    "project": "aqi_prediction_pekhawar",
+    "current_version": 1,
+    "version_strategy": {
+        "versioning_scheme": "semantic",
+        "auto_increment": true,
+        "backward_compatibility": 2,
+        "naming_convention": "aqi_{category}_v{version}"
+    },
+    "feature_groups": {
+        "weather": {
+            "hopsworks_name": "aqi_weather",
+            "current_version": 1,
+            "feature_count": 65,
+            "record_count": 3109,
+            "creation_date": "2025-08-11T23:00:49.917443",
+            "hopsworks_id": 1498742,
+            "status": "active"
+        },
+        "pollution": {
+            "hopsworks_name": "aqi_pollution",
+            "current_version": 1,
+            "feature_count": 123,
+            "record_count": 3109,
+            "creation_date": "2025-08-11T23:00:49.917443",
+            "hopsworks_id": 1501534,
+            "status": "active"
+        },
+        "temporal": {
+            "hopsworks_name": "aqi_temporal",
+            "current_version": 1,
+            "feature_count": 19,
+            "record_count": 3109,
+            "creation_date": "2025-08-11T23:00:49.917443",
+            "hopsworks_id": 1501535,
+            "status": "active"
+        },
+        "lag_features": {
+            "hopsworks_name": "aqi_lag_features",
+            "current_version": 1,
+            "feature_count": 1,
+            "record_count": 3109,
+            "creation_date": "2025-08-11T23:00:49.917443",
+            "hopsworks_id": 1498743,
+            "status": "active"
+        },
+        "advanced_features": {
+            "hopsworks_name": "aqi_advanced_features",
+            "current_version": 1,
+            "feature_count": 7,
+            "record_count": 3109,
+            "creation_date": "2025-08-11T23:00:49.917443",
+            "hopsworks_id": 1498744,
+            "status": "active"
+        }
+    },
+    "performance_baseline": {
+        "r2_score": 0.696,
+        "mae": 8.2,
+        "validation_method": "temporal_split",
+        "model_type": "random_forest"
+    },
+    "update_triggers": {
+        "performance_degradation": {
+            "threshold": 0.05,
+            "action": "create_new_version"
+        },
+        "data_drift": {
+            "threshold": 0.1,
+            "action": "alert_and_validate"
+        },
+        "schema_change": {
+            "action": "major_version_increment"
+        }
+    },
+    "validation_requirements": [
+        "temporal_split_validation",
+        "time_series_cross_validation",
+        "feature_importance_analysis",
+        "data_leakage_check"
+    ],
+    "created_date": "2025-08-11T23:00:49.917443"
+}

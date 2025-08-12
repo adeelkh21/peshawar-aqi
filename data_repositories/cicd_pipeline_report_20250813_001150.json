@@ -1,0 +1,54 @@
+{
+    "pipeline_timestamp": "20250813_001150",
+    "overall_success": false,
+    "step_results": {
+        "Data Collection": {
+            "success": false,
+            "duration": 0.7501039505004883
+        }
+    },
+    "performance_summary": {
+        "best_performance": 0.0,
+        "current_model": null,
+        "target_achieved": false
+    },
+    "pipeline_config": {
+        "data_collection": {
+            "enabled": true,
+            "frequency": "hourly",
+            "retry_attempts": 3,
+            "validation_threshold": 0.8
+        },
+        "feature_engineering": {
+            "enabled": true,
+            "current_lags": [
+                1,
+                2,
+                3,
+                6,
+                12,
+                24
+            ],
+            "future_lags": [
+                36,
+                54,
+                66
+            ],
+            "feature_selection": true
+        },
+        "model_training": {
+            "enabled": true,
+            "models": [
+                "xgboost",
+                "lightgbm"
+            ],
+            "cv_folds": 5,
+            "performance_threshold": 0.75
+        },
+        "deployment": {
+            "enabled": true,
+            "auto_deploy": true,
+            "rollback_threshold": 0.7
+        }
+    }
+}

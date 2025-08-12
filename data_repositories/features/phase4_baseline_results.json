@@ -1,0 +1,17 @@
+{
+    "timestamp": "2025-08-13T00:53:21.207970",
+    "step": "baseline",
+    "models_completed": [
+        "random_forest"
+    ],
+    "results": {
+        "random_forest": {
+            "train_r2": 0.9737758121443016,
+            "test_r2": 0.7794992971621771,
+            "test_mae": 5.706150523013328,
+            "test_rmse": 27.825606185406897,
+            "model_type": "Random Forest"
+        }
+    },
+    "best_performance": 0.7794992971621771
+}

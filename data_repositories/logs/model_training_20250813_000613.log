@@ -1,0 +1,17 @@
+2025-08-13 00:06:13,051 - __main__ - INFO - Starting model training pipeline
+2025-08-13 00:06:13,051 - __main__ - INFO - Creating historical baseline dataset
+2025-08-13 00:06:13,725 - __main__ - INFO - Created historical baseline: 2850 records
+2025-08-13 00:06:13,732 - __main__ - INFO - Preparing training data
+2025-08-13 00:06:13,924 - __main__ - INFO - Prepared training data: 2850 samples, 264 features
+2025-08-13 00:06:13,932 - __main__ - INFO - Training LightGBM model
+2025-08-13 00:06:17,096 - __main__ - INFO - LightGBM training completed: RMSE=0.0000
+2025-08-13 00:06:17,096 - __main__ - INFO - Training XGBoost model
+2025-08-13 00:06:19,151 - __main__ - INFO - XGBoost training completed: RMSE=0.0000
+2025-08-13 00:06:19,187 - __main__ - INFO - Training Random Forest model
+2025-08-13 00:06:19,194 - __main__ - ERROR - Error training Random Forest model: Input X contains NaN.
+RandomForestRegressor does not accept missing values encoded as NaN natively. For supervised learning, you might want to consider sklearn.ensemble.HistGradientBoostingClassifier and Regressor which accept missing values encoded as NaNs natively. Alternatively, it is possible to preprocess the data, for instance by using an imputer transformer in a pipeline or drop samples with missing values. See https://scikit-learn.org/stable/modules/impute.html You can find a list of all estimators that handle NaN values at the following page: https://scikit-learn.org/stable/modules/impute.html#estimators-that-handle-nan-values
+2025-08-13 00:06:19,194 - __main__ - INFO - Selecting best model
+2025-08-13 00:06:19,194 - __main__ - INFO - Best model selected: lightgbm
+2025-08-13 00:06:19,194 - __main__ - INFO - Saving models and metadata
+2025-08-13 00:06:19,214 - __main__ - INFO - Models and metadata saved successfully
+2025-08-13 00:06:19,223 - __main__ - INFO - Model training pipeline completed successfully

@@ -1,0 +1,19 @@
+{
+    "timestamp": "2025-08-13T00:43:07.362683",
+    "leaderboard": {
+        "LightGBM Optimized": 0.9497041536744656,
+        "LightGBM Basic": 0.9092727313190906,
+        "XGBoost": 0.893,
+        "Random Forest": 0.774
+    },
+    "champion": {
+        "model": "LightGBM Optimized",
+        "r2_score": 0.9497041536744656,
+        "target_exceeded": 0.1997041536744656
+    },
+    "target_achievement": {
+        "target_r2": 0.75,
+        "achieved": "True",
+        "all_models_above_target": true
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "timestamp": "2025-08-11T22:00:06.498738",
+    "total_features": 215,
+    "total_records": 3049,
+    "performance": {
+        "best_temporal_split": 0.6958613992892759,
+        "cv_mean": 0.6871209541545883,
+        "cv_std": 0.18769702168995078,
+        "status": "ACHIEVED"
+    },
+    "best_model": "Random Forest (Complex)"
+}

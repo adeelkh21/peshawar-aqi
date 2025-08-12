@@ -1,0 +1,18 @@
+{
+    "lightgbm": {
+        "cv_rmse_mean": 0.0,
+        "cv_rmse_std": 0.0,
+        "r2": 1.0,
+        "rmse": 0.0,
+        "mae": 0.0,
+        "is_best": true
+    },
+    "xgboost": {
+        "cv_rmse_mean": 0.0,
+        "cv_rmse_std": 0.0,
+        "r2": 1.0,
+        "rmse": 0.0,
+        "mae": 0.0,
+        "is_best": false
+    }
+}

@@ -1,0 +1,80 @@
+{
+    "timestamp": "20250813_001254",
+    "best_model": "lightgbm",
+    "model_config": {
+        "target_variable": "aqi_category",
+        "prediction_horizon": 3,
+        "current_lags": [
+            1,
+            2,
+            3,
+            6,
+            12,
+            24
+        ],
+        "future_lags": [
+            36,
+            54,
+            66
+        ],
+        "models": [
+            "lightgbm",
+            "xgboost",
+            "random_forest"
+        ],
+        "cv_folds": 5,
+        "test_size": 0.2,
+        "random_state": 42
+    },
+    "hyperparameters": {
+        "lightgbm": {
+            "objective": "regression",
+            "metric": "rmse",
+            "boosting_type": "gbdt",
+            "num_leaves": 31,
+            "learning_rate": 0.05,
+            "feature_fraction": 0.9,
+            "bagging_fraction": 0.8,
+            "bagging_freq": 5,
+            "verbose": -1
+        },
+        "xgboost": {
+            "objective": "reg:squarederror",
+            "eval_metric": "rmse",
+            "max_depth": 6,
+            "learning_rate": 0.1,
+            "subsample": 0.8,
+            "colsample_bytree": 0.8,
+            "random_state": 42
+        },
+        "random_forest": {
+            "n_estimators": 100,
+            "max_depth": 10,
+            "min_samples_split": 5,
+            "min_samples_leaf": 2,
+            "random_state": 42
+        }
+    },
+    "performance_summary": {
+        "lightgbm": {
+            "cv_rmse_mean": 0.0,
+            "cv_rmse_std": 0.0,
+            "r2": 1.0,
+            "rmse": 0.0,
+            "mae": 0.0,
+            "is_best": true
+        },
+        "xgboost": {
+            "cv_rmse_mean": 0.0,
+            "cv_rmse_std": 0.0,
+            "r2": 1.0,
+            "rmse": 0.0,
+            "mae": 0.0,
+            "is_best": false
+        }
+    },
+    "training_data_info": {
+        "total_samples": 264,
+        "total_features": 264
+    }
+}
