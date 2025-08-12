@@ -10,6 +10,10 @@ on:
     paths:
       - '.github/workflows/aqi_data_pipeline.yml'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   collect-data:
     runs-on: ubuntu-latest
@@ -126,8 +130,8 @@ jobs:
         
     - name: Commit and push data
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
         
         # Add all data files (force add to override .gitignore)
         git add -f data_repositories/
@@ -135,7 +139,8 @@ jobs:
         # Commit with timestamp
         git commit -m "🔄 Hourly data collection: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
         
-        # Push to repository
+        # Push to repository using GITHUB_TOKEN
+        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
         git push origin main
         
     - name: Create data collection report

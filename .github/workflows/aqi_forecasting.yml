@@ -10,6 +10,10 @@ on:
     paths:
       - '.github/workflows/aqi_forecasting.yml'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   generate-forecast:
     runs-on: ubuntu-latest
@@ -315,8 +319,8 @@ jobs:
         
     - name: Commit forecast
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+        git config --local user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
         
         # Add forecast files (force add to override .gitignore)
         git add -f forecasts/
@@ -324,7 +328,8 @@ jobs:
         # Commit with timestamp
         git commit -m "🔮 Real-time forecast: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
         
-        # Push to repository
+        # Push to repository using GITHUB_TOKEN
+        git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}
         git push origin main
         
     - name: Create forecast report
