@@ -286,7 +286,7 @@ jobs:
         echo "- **Performance:** R² Score ≥ 0.85" >> model_training_report.md
         
     - name: Upload training report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: model-training-report
         path: model_training_report.md

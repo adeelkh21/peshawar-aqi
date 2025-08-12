@@ -341,7 +341,7 @@ jobs:
         echo "- **Quality:** ✅ Validated" >> forecast_report.md
         
     - name: Upload forecast report
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: forecast-report
         path: forecast_report.md
