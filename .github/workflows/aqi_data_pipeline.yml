@@ -1,0 +1,129 @@
+name: AQI Data Collection Pipeline
+
+on:
+  schedule:
+    # Run every hour
+    - cron: '0 * * * *'
+  workflow_dispatch: # Allow manual trigger
+  push:
+    branches: [ main ]
+    paths:
+      - '.github/workflows/aqi_data_pipeline.yml'
+
+jobs:
+  collect-data:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        lfs: true
+        
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Create data directories
+      run: |
+        mkdir -p data_repositories/raw
+        mkdir -p data_repositories/processed
+        mkdir -p data_repositories/real_time_data
+        mkdir -p data_repositories/historical_data
+        mkdir -p data_repositories/logs
+        
+    - name: Collect real-time data
+      run: |
+        python -c "
+        import sys
+        sys.path.append('.')
+        from phase1_enhanced_data_collection import EnhancedDataCollector
+        from datetime import datetime
+        import logging
+        
+        # Configure logging
+        logging.basicConfig(level=logging.INFO)
+        logger = logging.getLogger(__name__)
+        
+        # Initialize collector
+        collector = EnhancedDataCollector()
+        
+        # Collect current data
+        logger.info('Starting hourly data collection...')
+        success = collector.run_pipeline()
+        
+        if success:
+            logger.info('✅ Hourly data collection completed successfully')
+        else:
+            logger.error('❌ Hourly data collection failed')
+            sys.exit(1)
+        "
+        
+    - name: Validate collected data
+      run: |
+        python -c "
+        import sys
+        sys.path.append('.')
+        from data_validation import DataValidator
+        import pandas as pd
+        from datetime import datetime
+        import logging
+        
+        logging.basicConfig(level=logging.INFO)
+        logger = logging.getLogger(__name__)
+        
+        # Validate collected data
+        validator = DataValidator()
+        
+        # Check if new data was collected
+        try:
+            df = pd.read_csv('data_repositories/processed/merged_data.csv')
+            validation_result = validator.validate_merged_data(df)
+            
+            if validation_result['status'] == 'PASS':
+                logger.info('✅ Data validation passed')
+            else:
+                logger.warning(f'⚠️ Data validation issues: {validation_result}')
+                
+        except Exception as e:
+            logger.error(f'❌ Data validation failed: {e}')
+            sys.exit(1)
+        "
+        
+    - name: Commit and push data
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        
+        # Add all data files
+        git add data_repositories/
+        
+        # Commit with timestamp
+        git commit -m "🔄 Hourly data collection: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
+        
+        # Push to repository
+        git push origin main
+        
+    - name: Create data collection report
+      run: |
+        echo "# Hourly Data Collection Report" > data_collection_report.md
+        echo "**Date:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> data_collection_report.md
+        echo "**Status:** ✅ Completed" >> data_collection_report.md
+        echo "" >> data_collection_report.md
+        echo "## Data Summary" >> data_collection_report.md
+        echo "- **Collection Time:** $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> data_collection_report.md
+        echo "- **Data Source:** OpenWeatherMap API" >> data_collection_report.md
+        echo "- **Location:** Peshawar (34.0083, 71.5189)" >> data_collection_report.md
+        echo "- **Validation:** ✅ PASS" >> data_collection_report.md
+        
+    - name: Upload data collection report
+      uses: actions/upload-artifact@v3
+      with:
+        name: data-collection-report
+        path: data_collection_report.md

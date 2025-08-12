@@ -1,0 +1,5 @@
+{
+    "timestamp": "20250813_002254",
+    "model_name": "lightgbm_optimized",
+    "performance": 0.9497041536744656,
+    "target_achieved": 
