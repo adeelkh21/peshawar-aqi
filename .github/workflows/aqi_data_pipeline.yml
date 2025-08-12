@@ -46,22 +46,39 @@ jobs:
         from phase1_enhanced_data_collection import EnhancedDataCollector
         from datetime import datetime
         import logging
+        import os
         
         # Configure logging
         logging.basicConfig(level=logging.INFO)
         logger = logging.getLogger(__name__)
         
-        # Initialize collector
-        collector = EnhancedDataCollector()
-        
-        # Collect current data
-        logger.info('Starting hourly data collection...')
-        success = collector.run_pipeline()
-        
-        if success:
-            logger.info('✅ Hourly data collection completed successfully')
-        else:
-            logger.error('❌ Hourly data collection failed')
+        try:
+            # Initialize collector
+            logger.info('🔄 Initializing data collector...')
+            collector = EnhancedDataCollector()
+            
+            # Collect current data
+            logger.info('📡 Starting hourly data collection...')
+            success = collector.run_pipeline()
+            
+            if success:
+                logger.info('✅ Hourly data collection completed successfully')
+                
+                # Verify data was created
+                data_file = 'data_repositories/processed/merged_data.csv'
+                if os.path.exists(data_file):
+                    import pandas as pd
+                    df = pd.read_csv(data_file)
+                    logger.info(f'📊 Data file created: {len(df)} records')
+                else:
+                    logger.error('❌ Data file not found after collection')
+                    sys.exit(1)
+            else:
+                logger.error('❌ Hourly data collection failed')
+                sys.exit(1)
+                
+        except Exception as e:
+            logger.error(f'❌ Data collection error: {e}')
             sys.exit(1)
         "
         
@@ -74,6 +91,7 @@ jobs:
         import pandas as pd
         from datetime import datetime
         import logging
+        import os
         
         logging.basicConfig(level=logging.INFO)
         logger = logging.getLogger(__name__)
@@ -83,13 +101,23 @@ jobs:
         
         # Check if new data was collected
         try:
-            df = pd.read_csv('data_repositories/processed/merged_data.csv')
-            validation_result = validator.validate_merged_data(df)
+            # Check if file exists
+            data_file = 'data_repositories/processed/merged_data.csv'
+            if not os.path.exists(data_file):
+                logger.error(f'❌ Data file not found: {data_file}')
+                sys.exit(1)
             
-            if validation_result['status'] == 'PASS':
+            df = pd.read_csv(data_file)
+            logger.info(f'📊 Loaded data: {len(df)} records')
+            
+            validation_result = validator.validate_merged_data(df)
+            logger.info(f'🔍 Validation result: {validation_result}')
+            
+            if validation_result.get('valid', False):
                 logger.info('✅ Data validation passed')
             else:
                 logger.warning(f'⚠️ Data validation issues: {validation_result}')
+                # Don't exit on validation warnings, only on errors
                 
         except Exception as e:
             logger.error(f'❌ Data validation failed: {e}')
