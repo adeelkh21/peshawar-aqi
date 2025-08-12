@@ -318,8 +318,8 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         
-        # Add forecast files
-        git add forecasts/
+        # Add forecast files (force add to override .gitignore)
+        git add -f forecasts/
         
         # Commit with timestamp
         git commit -m "🔮 Real-time forecast: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"

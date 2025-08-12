@@ -33,9 +33,36 @@ ENV/
 
 # Project specific
 data/
-data_repositories/
 logs/
 *.log
+
+# Allow specific data files for CI/CD pipeline
+!data_repositories/
+!data_repositories/processed/
+!data_repositories/processed/*.csv
+!data_repositories/features/
+!data_repositories/features/*.csv
+!data_repositories/features/*.json
+!data_repositories/models/
+!data_repositories/models/trained_models/
+!data_repositories/models/trained_models/*.pkl
+!data_repositories/models/evaluation_reports/
+!data_repositories/models/evaluation_reports/*.json
+!data_repositories/historical_data/
+!data_repositories/historical_data/*.csv
+!data_repositories/raw/
+!data_repositories/raw/metadata/
+!data_repositories/raw/metadata/*.json
+!data_repositories/processed/metadata/
+!data_repositories/processed/metadata/*.json
+!data_repositories/processed/validation_reports/
+!data_repositories/processed/validation_reports/*.json
+!data_repositories/features/validation/
+!data_repositories/features/validation/*.json
+!data_repositories/historical_data/metadata/
+!data_repositories/historical_data/metadata/*.json
+!data_repositories/logs/
+!data_repositories/logs/*.log
 
 # Environment variables
 .env

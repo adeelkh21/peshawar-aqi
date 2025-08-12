@@ -129,30 +129,14 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         
-        # Temporarily remove data_repositories from .gitignore for CI/CD
-        if [ -f .gitignore ]; then
-          cp .gitignore .gitignore.backup
-          sed '/^data_repositories\//d' .gitignore > .gitignore.tmp && mv .gitignore.tmp .gitignore
-        fi
+        # Add all data files (force add to override .gitignore)
+        git add -f data_repositories/
         
-        # Add data files
-        git add data_repositories/ || echo "No data files to add"
+        # Commit with timestamp
+        git commit -m "🔄 Hourly data collection: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
         
-        # Restore original .gitignore
-        if [ -f .gitignore.backup ]; then
-          mv .gitignore.backup .gitignore
-        fi
-        
-        # Check if there are changes to commit
-        if git diff --staged --quiet; then
-          echo "No changes to commit"
-        else
-          # Commit with timestamp
-          git commit -m "🔄 Hourly data collection: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
-          
-          # Push to repository
-          git push origin main
-        fi
+        # Push to repository
+        git push origin main
         
     - name: Create data collection report
       run: |

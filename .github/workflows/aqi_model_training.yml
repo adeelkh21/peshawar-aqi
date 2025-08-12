@@ -262,9 +262,9 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         
-        # Add model files and reports
-        git add data_repositories/models/
-        git add deployment/
+        # Add model files and reports (force add to override .gitignore)
+        git add -f data_repositories/models/
+        git add -f deployment/
         
         # Commit with timestamp
         git commit -m "🤖 Model retraining: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" || echo "No changes to commit"
