@@ -69,10 +69,7 @@ class XGBoostOptimizer:
             # Train model
             xgb_basic.fit(
                 self.base.X_train, 
-                self.base.y_train,
-                eval_set=[(self.base.X_train, self.base.y_train), (self.base.X_test, self.base.y_test)],
-                eval_metric='rmse',
-                verbose=False
+                self.base.y_train
             )
             
             # Predictions
@@ -158,16 +155,16 @@ class XGBoostOptimizer:
             random_search = RandomizedSearchCV(
                 estimator=xgb_regressor,
                 param_distributions=param_grid,
-                n_iter=50,  # Reasonable number of iterations
+                n_iter=20,  # Reduced from 50 to prevent timeouts
                 cv=tscv,
                 scoring='r2',
-                n_jobs=-1,
+                n_jobs=1,  # Use single job to prevent parallel processing issues
                 verbose=1,
                 random_state=42
             )
             
             # Fit the search
-            print("🔄 Training 50 XGBoost configurations...")
+            print("🔄 Training 20 XGBoost configurations...")
             random_search.fit(self.base.X_train, self.base.y_train)
             
             # Best model

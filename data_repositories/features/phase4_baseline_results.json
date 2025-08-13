@@ -1,17 +1,17 @@
 {
-    "timestamp": "2025-08-13T00:53:21.207970",
+    "timestamp": "2025-08-13T15:47:45.267148",
     "step": "baseline",
     "models_completed": [
         "random_forest"
     ],
     "results": {
         "random_forest": {
-            "train_r2": 0.9737758121443016,
-            "test_r2": 0.7794992971621771,
-            "test_mae": 5.706150523013328,
-            "test_rmse": 27.825606185406897,
+            "train_r2": 0.9857456076454073,
+            "test_r2": 0.9002768549567335,
+            "test_mae": 9.239680555555555,
+            "test_rmse": 12.146657101853167,
             "model_type": "Random Forest"
         }
     },
-    "best_performance": 0.7794992971621771
+    "best_performance": 0.9002768549567335
 }

@@ -268,12 +268,12 @@ class EnhancedDataCollector:
             return None
 
     def merge_and_process_data(self, weather_df, pollution_df):
-        """Merge and process data with enhanced validation"""
+        """Merge and process data with enhanced validation and historical data preservation"""
         print("\n🔄 Processing and Merging Data")
         print("-" * 40)
         
         try:
-            self.logger.info("Starting data processing and merging")
+            self.logger.info("Starting data processing and merging with historical preservation")
             
             # Ensure timestamps are datetime
             weather_df['timestamp'] = pd.to_datetime(weather_df['timestamp'])
@@ -284,7 +284,7 @@ class EnhancedDataCollector:
             pollution_df['timestamp'] = pollution_df['timestamp'].dt.floor('H')
             
             # Merge on timestamp
-            df = pd.merge(
+            new_data = pd.merge(
                 pollution_df,
                 weather_df,
                 on='timestamp',
@@ -292,57 +292,113 @@ class EnhancedDataCollector:
             )
             
             # Add time-based features
-            df['hour'] = df['timestamp'].dt.hour
-            df['day'] = df['timestamp'].dt.day
-            df['month'] = df['timestamp'].dt.month
-            df['day_of_week'] = df['timestamp'].dt.dayofweek
-            df['is_weekend'] = df['day_of_week'].isin([5, 6]).astype(int)
+            new_data['hour'] = new_data['timestamp'].dt.hour
+            new_data['day'] = new_data['timestamp'].dt.day
+            new_data['month'] = new_data['timestamp'].dt.month
+            new_data['day_of_week'] = new_data['timestamp'].dt.dayofweek
+            new_data['is_weekend'] = new_data['day_of_week'].isin([5, 6]).astype(int)
             
-            # Validate merged data
-            validation_report = self.validator.validate_merged_data(df)
+            # CRITICAL: Load existing historical data and merge with new data
+            merged_file = os.path.join(self.data_dir, "processed", "merged_data.csv")
+            historical_data = None
             
-            # Save processed data
-            processed_file = os.path.join(self.data_dir, "processed", "merged_data.csv")
-            df.to_csv(processed_file, index=False)
+            if os.path.exists(merged_file):
+                try:
+                    print("📚 Loading existing historical data...")
+                    historical_data = pd.read_csv(merged_file)
+                    historical_data['timestamp'] = pd.to_datetime(historical_data['timestamp'])
+                    
+                    # Remove any duplicate timestamps from historical data
+                    historical_data = historical_data.drop_duplicates(subset=['timestamp'], keep='first')
+                    
+                    print(f"📊 Historical data loaded: {len(historical_data):,} records")
+                    print(f"📅 Historical range: {historical_data['timestamp'].min()} to {historical_data['timestamp'].max()}")
+                    
+                    # Check for overlapping timestamps
+                    new_timestamps = set(new_data['timestamp'])
+                    historical_timestamps = set(historical_data['timestamp'])
+                    overlap = new_timestamps.intersection(historical_timestamps)
+                    
+                    if overlap:
+                        print(f"⚠️  Found {len(overlap)} overlapping timestamps - updating with new data")
+                        # Remove overlapping records from historical data
+                        historical_data = historical_data[~historical_data['timestamp'].isin(overlap)]
+                        print(f"📊 Historical data after overlap removal: {len(historical_data):,} records")
+                    
+                except Exception as e:
+                    self.logger.warning(f"Could not load historical data: {e}")
+                    print(f"⚠️  Could not load historical data: {e}")
+                    historical_data = None
+            
+            # Combine historical and new data
+            if historical_data is not None and len(historical_data) > 0:
+                print("🔄 Merging historical and new data...")
+                combined_data = pd.concat([historical_data, new_data], ignore_index=True)
+                combined_data = combined_data.sort_values('timestamp').reset_index(drop=True)
+                
+                # Remove any duplicate timestamps (keep latest)
+                combined_data = combined_data.drop_duplicates(subset=['timestamp'], keep='last')
+                
+                print(f"📊 Combined dataset: {len(combined_data):,} records")
+                print(f"📅 Combined range: {combined_data['timestamp'].min()} to {combined_data['timestamp'].max()}")
+                
+                # Calculate data growth
+                growth = len(combined_data) - len(historical_data)
+                print(f"📈 Data growth: +{growth:,} new records")
+                
+            else:
+                print("🆕 No historical data found - creating new dataset")
+                combined_data = new_data.copy()
+                print(f"📊 New dataset: {len(combined_data):,} records")
+            
+            # Validate combined data
+            validation_report = self.validator.validate_merged_data(combined_data)
+            
+            # Save the combined dataset
+            combined_data.to_csv(merged_file, index=False)
             
             # Save validation report
-            validation_file = os.path.join(self.data_dir, "processed", "validation_reports", "merged_validation.json")
+            validation_file = os.path.join(self.data_dir, "processed", "validation_reports", f"merged_validation_{self.collection_timestamp}.json")
             self.validator.save_validation_report(validation_report, validation_file)
             
             # Save metadata
             metadata = {
                 "timestamp": self.collection_timestamp,
-                "records": len(df),
-                "start_date": df['timestamp'].min().isoformat(),
-                "end_date": df['timestamp'].max().isoformat(),
-                "features": list(df.columns),
-                "missing_values": df.isnull().sum().to_dict(),
+                "total_records": len(combined_data),
+                "new_records": len(new_data),
+                "historical_records": len(historical_data) if historical_data is not None else 0,
+                "start_date": combined_data['timestamp'].min().isoformat(),
+                "end_date": combined_data['timestamp'].max().isoformat(),
+                "data_growth": len(combined_data) - (len(historical_data) if historical_data is not None else 0),
                 "validation_status": validation_report['valid'],
-                "validation_errors": len(validation_report['errors']),
-                "validation_warnings": len(validation_report['warnings'])
+                "validation_errors": len(validation_report.get('errors', [])),
+                "validation_warnings": len(validation_report.get('warnings', [])),
+                "preservation_status": "success"
             }
             
-            metadata_file = os.path.join(self.data_dir, "processed", "metadata", "processed_metadata.json")
+            metadata_file = os.path.join(self.data_dir, "processed", "metadata", f"merged_metadata_{self.collection_timestamp}.json")
             with open(metadata_file, 'w') as f:
                 json.dump(metadata, f, indent=4, default=str)
             
             # Log results
-            self.logger.info(f"Data processing completed: {len(df)} records")
+            self.logger.info(f"Data merging completed: {len(combined_data)} total records")
+            self.logger.info(f"Historical preservation: {'SUCCESS' if historical_data is not None else 'NEW_DATASET'}")
             self.logger.info(f"Validation status: {'PASS' if validation_report['valid'] else 'FAIL'}")
             
-            print(f"✅ Data processing completed")
-            print(f"📊 Final dataset shape: {df.shape}")
-            print(f"⏰ Date range: {df['timestamp'].min()} to {df['timestamp'].max()}")
+            print(f"✅ Data merging completed successfully!")
+            print(f"📊 Total records: {len(combined_data):,}")
+            print(f"📈 New records added: {len(new_data):,}")
             print(f"🔍 Validation: {'✅ PASS' if validation_report['valid'] else '❌ FAIL'}")
+            print(f"💾 Historical data preserved: {'✅ YES' if historical_data is not None else '🆕 NEW'}")
             
-            if validation_report['warnings']:
+            if validation_report.get('warnings'):
                 print(f"⚠️  Warnings: {len(validation_report['warnings'])}")
             
-            return df
+            return combined_data
             
         except Exception as e:
-            self.logger.error(f"Error processing data: {str(e)}")
-            print(f"❌ Error processing data: {str(e)}")
+            self.logger.error(f"Error in data processing and merging: {str(e)}")
+            print(f"❌ Error in data processing and merging: {str(e)}")
             return None
 
     def generate_collection_summary(self, weather_df, pollution_df, merged_df):

@@ -34,6 +34,9 @@ from sklearn.ensemble import RandomForestRegressor
 import xgboost as xgb
 import lightgbm as lgb
 
+# EPA AQI Calculation
+from aqi_calculation import EPAAQICalculator
+
 # Deep Learning Libraries
 try:
     import tensorflow as tf
@@ -110,23 +113,84 @@ class Phase4ModelDevelopment:
             df['timestamp'] = pd.to_datetime(df['timestamp'])
             df = df.sort_values('timestamp').reset_index(drop=True)
             
-            # AQI CONVERSION: Convert categorical AQI to numerical EPA values
-            print("🔄 Converting AQI from categorical to numerical EPA values...")
-            if 'aqi_category' in df.columns and 'aqi_numeric' not in df.columns:
-                # Convert categorical AQI (1-5) to numerical EPA AQI values
-                aqi_conversion = {
-                    1: 25,   # Good (0-50)
-                    2: 75,   # Moderate (51-100) 
-                    3: 125,  # Unhealthy for Sensitive Groups (101-150)
-                    4: 175,  # Unhealthy (151-200)
-                    5: 250   # Very Unhealthy (201-300)
-                }
-                df['aqi_numeric'] = df['aqi_category'].map(aqi_conversion)
-                print(f"✅ Converted categorical AQI to numerical EPA values (range: {df['aqi_numeric'].min()}-{df['aqi_numeric'].max()})")
-            elif 'aqi_numeric' in df.columns:
-                print(f"✅ Using existing numerical AQI (range: {df['aqi_numeric'].min()}-{df['aqi_numeric'].max()})")
+            # EPA AQI CALCULATION: Calculate proper EPA AQI from pollutant concentrations
+            print("🔄 Calculating EPA-standard AQI from pollutant concentrations...")
+            
+            # Initialize EPA AQI calculator
+            aqi_calculator = EPAAQICalculator()
+            
+            # Check if we have pollutant data for EPA calculation
+            required_pollutants = ['pm2_5', 'pm10', 'o3', 'no2', 'co', 'so2']
+            available_pollutants = [p for p in required_pollutants if p in df.columns]
+            
+            if len(available_pollutants) >= 2:  # Need at least 2 pollutants for meaningful AQI
+                print(f"✅ Found {len(available_pollutants)} pollutants: {available_pollutants}")
+                
+                # Calculate EPA AQI from pollutant concentrations
+                df['aqi_numeric'] = aqi_calculator.calculate_aqi_from_dataframe(df)
+                
+                # Validate AQI calculation results
+                print("🔍 Validating AQI calculation results...")
+                aqi_validation = aqi_calculator.validate_aqi_range(df['aqi_numeric'])
+                
+                if aqi_validation["valid"]:
+                    print("✅ AQI validation passed")
+                else:
+                    print("⚠️  AQI validation issues detected:")
+                    for warning in aqi_validation["warnings"]:
+                        print(f"   {warning}")
+                
+                print(f"📊 AQI Statistics: {aqi_validation['statistics']}")
+                
+                # Remove rows with invalid AQI values
+                initial_len = len(df)
+                df = df.dropna(subset=['aqi_numeric'])
+                removed_count = initial_len - len(df)
+                
+                if removed_count > 0:
+                    print(f"⚠️  Removed {removed_count} rows with invalid AQI values")
+                
+                print(f"✅ Calculated EPA AQI values (range: {df['aqi_numeric'].min():.1f}-{df['aqi_numeric'].max():.1f})")
+                print(f"📊 AQI distribution: {df['aqi_numeric'].describe()}")
+                
+                # CRITICAL: Remove raw pollutant features to prevent data leakage
+                # These features directly determine the target AQI, causing perfect correlation
+                print("🔒 Removing raw pollutant features to prevent data leakage...")
+                pollutant_features_to_remove = ['pm2_5', 'pm10', 'o3', 'no2', 'co', 'so2', 'nh3', 'no']
+                for pollutant in pollutant_features_to_remove:
+                    if pollutant in df.columns:
+                        df = df.drop(columns=[pollutant])
+                        print(f"   Removed: {pollutant}")
+                
+                # Also remove any rolling features that are too recent (within 1-3 hours)
+                # as they can still leak information about current AQI
+                rolling_features_to_remove = []
+                for col in df.columns:
+                    if any(x in col for x in ['_lag_1h', '_lag_2h', '_lag_3h', '_rolling_mean_3h', '_rolling_std_3h']):
+                        rolling_features_to_remove.append(col)
+                
+                if rolling_features_to_remove:
+                    df = df.drop(columns=rolling_features_to_remove)
+                    print(f"   Removed {len(rolling_features_to_remove)} recent rolling/lag features")
+                
             else:
-                raise ValueError("No AQI column found. Expected 'aqi_category' or 'aqi_numeric'.")
+                print("⚠️  Insufficient pollutant data for EPA AQI calculation")
+                print(f"   Available: {available_pollutants}")
+                print("   Falling back to categorical AQI conversion...")
+                
+                if 'aqi_category' in df.columns:
+                    # Fallback to simple conversion (less accurate but functional)
+                    aqi_conversion = {
+                        1: 25,   # Good (0-50)
+                        2: 75,   # Moderate (51-100) 
+                        3: 125,  # Unhealthy for Sensitive Groups (101-150)
+                        4: 175,  # Unhealthy (151-200)
+                        5: 250   # Very Unhealthy (201-300)
+                    }
+                    df['aqi_numeric'] = df['aqi_category'].map(aqi_conversion)
+                    print(f"⚠️  Used fallback conversion (range: {df['aqi_numeric'].min()}-{df['aqi_numeric'].max()})")
+                else:
+                    raise ValueError("No AQI data available. Need pollutant concentrations or aqi_category.")
             
             # Always use aqi_numeric as target
             target_col = 'aqi_numeric'
@@ -136,10 +200,24 @@ class Phase4ModelDevelopment:
             df = df.dropna(subset=[target_col])
             print(f"📊 Records after removing missing targets: {len(df)} (removed {initial_len - len(df)})")
             
-            # Feature columns (numeric features excluding the target and timestamp)
+            # Feature columns (numeric features excluding the target, timestamp, and original aqi_category)
             numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
-            feature_cols = [col for col in numeric_cols if col not in [target_col, 'timestamp']]
+            feature_cols = [col for col in numeric_cols if col not in [target_col, 'timestamp', 'aqi_category']]
+            
+            # Additional feature filtering to prevent data leakage
+            print("🔍 Filtering features to prevent data leakage...")
+            filtered_features = []
+            for col in feature_cols:
+                # Keep weather features, time features, and historical patterns
+                if any(x in col for x in ['temperature', 'humidity', 'wind', 'pressure', 'hour', 'day', 'month', 
+                                        'lag_6h', 'lag_12h', 'lag_24h', 'lag_36h', 'lag_54h', 'lag_66h',
+                                        'rolling_mean_6h', 'rolling_mean_12h', 'rolling_mean_24h',
+                                        'diff_', 'interaction', 'index']):
+                    filtered_features.append(col)
+            
+            feature_cols = filtered_features
             self.feature_names = feature_cols
+            print(f"✅ Selected {len(feature_cols)} safe features (weather, time, historical patterns)")
             
             # Handle missing values in features
             print("🔧 Handling missing values...")
@@ -165,6 +243,35 @@ class Phase4ModelDevelopment:
             
             print(f"✅ Final dataset: {len(df)} records, {len(feature_cols)} features")
             print(f"📊 Target AQI range: {df[target_col].min():.1f} - {df[target_col].max():.1f}")
+            
+            # Verify no data leakage by checking correlation
+            print("🔍 Checking for data leakage...")
+            high_correlations = []
+            for col in feature_cols[:10]:  # Check first 10 features
+                correlation = df[col].corr(df[target_col])
+                if abs(correlation) > 0.95:
+                    print(f"   ⚠️  High correlation detected: {col} → {correlation:.3f}")
+                    high_correlations.append(col)
+            
+            if high_correlations:
+                print(f"   🚨 {len(high_correlations)} features have >95% correlation with target")
+                print("   This suggests possible data leakage - removing these features")
+                df = df.drop(columns=high_correlations)
+                feature_cols = [col for col in feature_cols if col not in high_correlations]
+                print(f"   ✅ Remaining features: {len(feature_cols)}")
+            
+            # Check target variable variance
+            target_variance = df[target_col].var()
+            target_std = df[target_col].std()
+            print(f"🔍 Target variable analysis:")
+            print(f"   Variance: {target_variance:.2f}")
+            print(f"   Standard deviation: {target_std:.2f}")
+            print(f"   Coefficient of variation: {(target_std/df[target_col].mean())*100:.1f}%")
+            
+            if target_variance < 100:  # AQI should have reasonable variance
+                print("   ⚠️  Low target variance - possible calculation issue")
+            if target_std < 10:
+                print("   ⚠️  Very low target standard deviation - suspicious")
             
             return df, feature_cols, target_col
             
