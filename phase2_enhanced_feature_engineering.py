@@ -73,31 +73,38 @@ class EnhancedFeatureEngineer:
         self.logger = logging.getLogger(__name__)
 
     def load_processed_data(self) -> Optional[pd.DataFrame]:
-        """Load processed data from Phase 1"""
+        """Load processed data for feature engineering.
+
+        Priority within CI: use prepared combined dataset created by training workflow,
+        then fallback to preserved merged_data.csv, and only then historical.
+        """
         print("\n📂 Loading Processed Data")
         print("-" * 40)
         
         try:
-            # Try to load the full historical dataset first
-            historical_file = os.path.join(self.data_dir, "historical_data", "real_historical_dataset.csv")
-            
-            if os.path.exists(historical_file):
-                df = pd.read_csv(historical_file)
+            # Priority 1: prepared training dataset
+            prepared_file = os.path.join(self.data_dir, "processed", "complete_training_dataset.csv")
+            if os.path.exists(prepared_file):
+                df = pd.read_csv(prepared_file)
                 df['timestamp'] = pd.to_datetime(df['timestamp'])
                 df = df.sort_values('timestamp').reset_index(drop=True)
-                
-                self.logger.info(f"Loaded historical data: {len(df)} records")
-                print(f"✅ Loaded historical data: {len(df):,} records")
-                print(f"📊 Features: {', '.join(df.columns)}")
-                print(f"⏰ Date range: {df['timestamp'].min()} to {df['timestamp'].max()}")
-                print(f"🎯 AQI range: {df['aqi_category'].min()} - {df['aqi_category'].max()}")
-                
+                self.logger.info(f"Loaded prepared training dataset: {len(df)} records")
+                print(f"✅ Loaded prepared training dataset: {len(df):,} records")
                 return df
-            
-            # Fallback to merged data if historical not available
+
+            # Priority 2: preserved merged realtime dataset
             processed_file = os.path.join(self.data_dir, "processed", "merged_data.csv")
             
             if not os.path.exists(processed_file):
+                # Priority 3: historical as last fallback
+                historical_file = os.path.join(self.data_dir, "historical_data", "real_historical_dataset.csv")
+                if os.path.exists(historical_file):
+                    df = pd.read_csv(historical_file)
+                    df['timestamp'] = pd.to_datetime(df['timestamp'])
+                    df = df.sort_values('timestamp').reset_index(drop=True)
+                    self.logger.info(f"Loaded historical fallback: {len(df)} records")
+                    print(f"✅ Loaded historical fallback: {len(df):,} records")
+                    return df
                 self.logger.error(f"No data files found")
                 print(f"❌ No data files found")
                 return None

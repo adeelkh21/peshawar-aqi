@@ -383,7 +383,7 @@ class EPAAQICalculator:
     # ------------------
     # Backwards-compatibility wrappers
     # ------------------
-
+    
     def calculate_overall_aqi(self, pollutant_data: Dict[str, float]) -> float:
         """
         Backwards-compatible wrapper that applies the same unit conversions used
@@ -415,63 +415,64 @@ class EPAAQICalculator:
             co=co_ppm,
             so2=so2_ppm, so2_unit="ppm",
         )
-
+    
     def calculate_aqi_from_dataframe(self, df: pd.DataFrame) -> pd.Series:
         """
         Backwards-compatible wrapper that returns a Series of overall AQI values
-        using legacy unit conversions and column expectations.
-        
-        This method handles the actual data format from the engineered features:
-        - PM2.5, PM10: raw values (likely μg/m³)
-        - O3, NO2, SO2: raw values (likely ppb)
-        - CO: raw values (likely ppb)
+        using the actual OWM units with correct conversions.
+
+        Data assumptions (OWM API):
+        - PM2.5, PM10: μg/m³ (use as-is)
+        - CO, NO2, O3, SO2: μg/m³ → convert using 25°C, 1 atm
+          ppb = μg/m³ × (24.45 / molecular_weight), ppm = ppb / 1000
         """
         aqi_values: List[float] = []
-        
+
+        # Molecular weights (g/mol)
+        MW = {"co": 28.01, "no2": 46.01, "o3": 48.00, "so2": 64.07}
+
         for _, row in df.iterrows():
-            pollutant_data = {}
-            
+            pollutant_data: Dict[str, float] = {}
+
             # Extract pollutants with proper unit handling
             for pollutant in ["pm2_5", "pm10", "o3", "no2", "co", "so2"]:
                 if pollutant in df.columns:
                     value = row[pollutant]
-                    
+
                     # Skip invalid values
                     if pd.isna(value) or value < 0:
                         continue
-                    
-                    # Apply unit conversions based on actual data analysis
-                    if pollutant == "pm2_5" or pollutant == "pm10":
-                        # PM values are likely already in μg/m³
-                        pollutant_data[pollutant] = value
-                    elif pollutant == "o3":
-                        # O3 is likely in ppb, convert to ppm for EPA calculator
-                        pollutant_data[pollutant] = value / 1000.0
-                    elif pollutant == "no2":
-                        # NO2 is likely in ppb, convert to ppm for EPA calculator  
-                        pollutant_data[pollutant] = value / 1000.0
-                    elif pollutant == "co":
-                        # CO is likely in ppb, convert to ppm for EPA calculator
-                        pollutant_data[pollutant] = value / 1000.0
-                    elif pollutant == "so2":
-                        # SO2 is likely in ppb, convert to ppm for EPA calculator
-                        pollutant_data[pollutant] = value / 1000.0
+
+                    # Apply unit conversions
+                    if pollutant in ("pm2_5", "pm10"):
+                        pollutant_data[pollutant] = float(value)
+                    elif pollutant in ("o3", "no2", "co", "so2"):
+                        try:
+                            ppb = float(value) * (24.45 / MW[pollutant])
+                            if pollutant == "co":
+                                pollutant_data[pollutant] = ppb / 1000.0  # ppm for CO
+                            elif pollutant == "o3":
+                                pollutant_data[pollutant] = ppb / 1000.0  # ppm for O3 8h
+                            else:
+                                pollutant_data[pollutant] = ppb  # ppb for NO2, SO2
+                        except Exception:
+                            pollutant_data[pollutant] = np.nan
                     else:
-                        pollutant_data[pollutant] = value
-            
-            # Calculate AQI using the new EPA method
+                        pollutant_data[pollutant] = float(value)
+
+            # Calculate AQI using the EPA method
             aqi = self.overall_aqi(
                 pm2_5=pollutant_data.get("pm2_5"),
-                pm10=pollutant_data.get("pm10"), 
+                pm10=pollutant_data.get("pm10"),
                 o3_8h=pollutant_data.get("o3"),
-                no2=pollutant_data.get("no2"), no2_unit="ppm",
+                no2=pollutant_data.get("no2"), no2_unit="ppb",
                 co=pollutant_data.get("co"),
-                so2=pollutant_data.get("so2"), so2_unit="ppm",
+                so2=pollutant_data.get("so2"), so2_unit="ppb",
             )
             aqi_values.append(aqi)
-        
-        return pd.Series(aqi_values, index=df.index)
 
+        return pd.Series(aqi_values, index=df.index)
+    
     def validate_aqi_calculation(self) -> Dict[str, List[Tuple[float, float]]]:
         """
         Backwards-compatible validation focused on PM endpoints used previously.

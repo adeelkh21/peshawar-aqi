@@ -88,7 +88,7 @@ class CICDPipelineIntegration:
             'model_training': {
                 'enabled': True,
                 'models': ['random_forest', 'xgboost', 'lightgbm'],
-                'target_performance': 0.65  # Realistic 65% R² target for AQI forecasting
+                'target_performance': 0.75  # Unified target for reporting/thresholds
             },
             'deployment': {
                 'enabled': True,
@@ -536,10 +536,11 @@ class CICDPipelineIntegration:
             print(f"🏆 Best Performance: {self.best_performance:.3f} R²")
             print(f"🤖 Best Model: {self.best_model_name}")
             
-            if self.best_performance >= 0.89:
-                print("🎯 Target Performance (89% R²) ACHIEVED!")
+            target = self.pipeline_config['model_training']['target_performance']
+            if self.best_performance >= target:
+                print(f"🎯 Target Performance ({target:.2f} R²) ACHIEVED!")
             else:
-                print(f"⚠️  Target performance not achieved ({self.best_performance:.3f} < 0.89)")
+                print(f"⚠️  Target performance not achieved ({self.best_performance:.3f} < {target:.2f})")
             
             print("📈 Ready for production deployment!")
         else:
@@ -558,8 +559,8 @@ class CICDPipelineIntegration:
                 "performance_summary": {
                     "best_performance": self.best_performance,
                     "best_model": self.best_model_name,
-                    "target_achieved": self.best_performance >= 0.89,
-                    "target_performance": 0.89
+                    "target_achieved": self.best_performance >= self.pipeline_config['model_training']['target_performance'],
+                    "target_performance": self.pipeline_config['model_training']['target_performance']
                 },
                 "pipeline_config": self.pipeline_config
             }

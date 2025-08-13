@@ -81,41 +81,51 @@ jobs:
         logging.basicConfig(level=logging.INFO)
         logger = logging.getLogger(__name__)
         
-        logger.info('🔄 Preparing training dataset...')
+        logger.info('🔄 Preparing training dataset (historical + realtime merged)...')
         
         try:
-            # Priority order for data sources
-            data_sources = [
-                'data_repositories/processed/merged_data.csv',  # Latest preserved data
-                'data_repositories/historical_data/real_historical_dataset.csv',  # Real historical
-                'data_repositories/historical_data/150_days_baseline.csv'  # Baseline historical
-            ]
-            
-            training_df = None
-            source_used = None
-            
-            # Find the best available data source
-            for source in data_sources:
-                if os.path.exists(source):
-                    try:
-                        df = pd.read_csv(source)
-                        if len(df) > 0 and 'timestamp' in df.columns:
-                            training_df = df
-                            source_used = source
-                            logger.info(f'📦 Using data source: {source}')
-                            logger.info(f'📊 Records: {len(df):,}')
-                            break
-                    except Exception as e:
-                        logger.warning(f'⚠️ Could not read {source}: {e}')
-                        continue
-            
-            if training_df is None:
-                logger.error('❌ No valid training data source found')
+            # Define sources
+            historical_real = 'data_repositories/historical_data/real_historical_dataset.csv'
+            historical_baseline = 'data_repositories/historical_data/150_days_baseline.csv'
+            realtime_file = 'data_repositories/processed/merged_data.csv'
+
+            parts = []
+            # Load historical (real preferred, else baseline)
+            if os.path.exists(historical_real):
+                try:
+                    df_h = pd.read_csv(historical_real)
+                    logger.info(f'📦 Loaded real historical data: {len(df_h):,} records')
+                    parts.append(df_h)
+                except Exception as e:
+                    logger.warning(f'⚠️ Could not read real historical: {e}')
+            elif os.path.exists(historical_baseline):
+                try:
+                    df_h = pd.read_csv(historical_baseline)
+                    logger.info(f'📦 Loaded baseline historical data: {len(df_h):,} records')
+                    parts.append(df_h)
+                except Exception as e:
+                    logger.warning(f'⚠️ Could not read baseline historical: {e}')
+
+            # Load latest preserved realtime
+            if os.path.exists(realtime_file):
+                try:
+                    df_r = pd.read_csv(realtime_file)
+                    logger.info(f'📡 Loaded realtime data: {len(df_r):,} records')
+                    parts.append(df_r)
+                except Exception as e:
+                    logger.warning(f'⚠️ Could not read realtime data: {e}')
+
+            if not parts:
+                logger.error('❌ No valid data sources found (historical or realtime)')
                 sys.exit(1)
             
-            # Validate and prepare data
+            # Concatenate, deduplicate on timestamp (keep latest), sort, drop newest hour
+            training_df = pd.concat(parts, ignore_index=True)
+            if 'timestamp' not in training_df.columns:
+                logger.error('❌ Combined dataset missing timestamp column')
+                sys.exit(1)
             training_df['timestamp'] = pd.to_datetime(training_df['timestamp'])
-            training_df = training_df.sort_values('timestamp').reset_index(drop=True)
+            training_df = training_df.sort_values('timestamp').drop_duplicates(subset=['timestamp'], keep='last').reset_index(drop=True)
             
             # Remove any incomplete recent data (last hour)
             if len(training_df) > 0:
@@ -254,7 +264,7 @@ jobs:
             model_candidates = glob.glob('deployment/*/production_model.pkl')
             if not model_candidates:
                 logger.error('❌ No production models found. Training pipeline may have failed.')
-                sys.exit(1)
+            sys.exit(1)
             
             # Find the latest model
             latest_model = sorted(model_candidates)[-1]
@@ -270,7 +280,7 @@ jobs:
                 logger.info(f'📊 Model performance: {metadata.get(\"test_r2\", \"N/A\")}')
             
             # Promote to latest
-            os.makedirs('deployment', exist_ok=True)
+        os.makedirs('deployment', exist_ok=True)
             shutil.copy(latest_model, 'deployment/latest_model.pkl')
             
             # Copy scaler if exists
@@ -297,10 +307,10 @@ jobs:
         
         try:
             # Check for Phase 4 pipeline reports
-            reports = sorted(glob.glob('cicd_pipeline_report_*.json'))
-            if not reports:
+        reports = sorted(glob.glob('cicd_pipeline_report_*.json'))
+        if not reports:
                 logger.error('❌ No pipeline reports found')
-                sys.exit(1)
+            sys.exit(1)
             
             latest_report = reports[-1]
             logger.info(f'📋 Using latest report: {latest_report}')
@@ -323,7 +333,7 @@ jobs:
                 logger.info('✅ Good performance (≥65% R²)')
             elif best_performance >= 0.55:
                 logger.warning('⚠️ Acceptable performance (≥55% R²)')
-            else:
+        else:
                 logger.warning('⚠️ Performance below threshold (<55% R²)')
             
             # Log additional metrics if available

@@ -1,0 +1,18 @@
+2025-08-13 12:11:20,973 - __main__ - INFO - Starting enhanced feature engineering pipeline
+2025-08-13 12:11:20,994 - __main__ - INFO - Loaded historical data: 3599 records
+2025-08-13 12:11:20,997 - __main__ - INFO - Creating temporal features
+2025-08-13 12:11:21,009 - __main__ - INFO - Created 26 temporal features
+2025-08-13 12:11:21,009 - __main__ - INFO - Creating lag features
+2025-08-13 12:11:21,035 - __main__ - INFO - Created lag features for 7 base features
+2025-08-13 12:11:21,036 - __main__ - INFO - Creating rolling features
+2025-08-13 12:11:21,226 - __main__ - INFO - Created rolling features for 8 base features
+2025-08-13 12:11:21,226 - __main__ - INFO - Creating interaction features
+2025-08-13 12:11:21,261 - __main__ - INFO - Created interaction features
+2025-08-13 12:11:21,267 - __main__ - INFO - Creating statistical features
+2025-08-13 12:11:21,277 - __main__ - INFO - Created statistical features
+2025-08-13 12:11:21,277 - __main__ - INFO - Validating engineered features
+2025-08-13 12:11:21,378 - __main__ - INFO - Feature validation completed: True
+2025-08-13 12:11:21,379 - __main__ - INFO - Saving engineered features
+2025-08-13 12:11:22,836 - data_validation - INFO - Validation report saved to data_repositories\features\validation\feature_validation.json
+2025-08-13 12:11:22,836 - __main__ - INFO - Saved engineered features: 315 features, 3599 records
+2025-08-13 12:11:22,840 - __main__ - INFO - Enhanced feature engineering pipeline completed successfully
