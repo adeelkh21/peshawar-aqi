@@ -156,8 +156,8 @@ class EnhancedFeatureEngineer:
         try:
             self.logger.info("Creating lag features")
             
-            # Key features for lagging
-            lag_features = ['aqi_category', 'pm2_5', 'pm10', 'co', 'no2', 'o3', 'temperature', 'relative_humidity']
+            # Key features for lagging (exclude target variable to prevent data leakage)
+            lag_features = ['pm2_5', 'pm10', 'co', 'no2', 'o3', 'temperature', 'relative_humidity']
             
             for feature in lag_features:
                 if feature in df.columns:
@@ -165,8 +165,8 @@ class EnhancedFeatureEngineer:
                         if len(df) > lag:
                             df[f'{feature}_lag_{lag}h'] = df[feature].shift(lag)
             
-            # Create lag differences
-            for feature in ['aqi_category', 'pm2_5', 'pm10']:
+            # Create lag differences (exclude AQI to prevent data leakage)
+            for feature in ['pm2_5', 'pm10']:
                 if feature in df.columns:
                     df[f'{feature}_diff_1h'] = df[feature].diff(1)
                     df[f'{feature}_diff_3h'] = df[feature].diff(3)
@@ -190,8 +190,8 @@ class EnhancedFeatureEngineer:
         try:
             self.logger.info("Creating rolling features")
             
-            # Features for rolling calculations
-            rolling_features = ['aqi_category', 'pm2_5', 'pm10', 'co', 'no2', 'o3', 'temperature', 'relative_humidity', 'wind_speed']
+            # Features for rolling calculations (exclude target variable to prevent data leakage)
+            rolling_features = ['pm2_5', 'pm10', 'co', 'no2', 'o3', 'temperature', 'relative_humidity', 'wind_speed']
             
             for feature in rolling_features:
                 if feature in df.columns:
@@ -242,12 +242,9 @@ class EnhancedFeatureEngineer:
             if 'wind_speed' in df.columns and 'pm2_5' in df.columns:
                 df['wind_pm2_5_interaction'] = df['wind_speed'] * df['pm2_5']
             
-            # AQI and weather interactions
-            if 'aqi_category' in df.columns and 'temperature' in df.columns:
-                df['aqi_temp_interaction'] = df['aqi_category'] * df['temperature']
-            
-            if 'aqi_category' in df.columns and 'relative_humidity' in df.columns:
-                df['aqi_humidity_interaction'] = df['aqi_category'] * df['relative_humidity']
+            # Weather interactions (removed AQI interactions to prevent data leakage)
+            if 'temperature' in df.columns and 'relative_humidity' in df.columns:
+                df['temp_humidity_interaction'] = df['temperature'] * df['relative_humidity']
             
             self.logger.info("Created interaction features")
             print(f"✅ Created interaction features")
@@ -348,18 +345,8 @@ class EnhancedFeatureEngineer:
             if inf_features:
                 validation_report['warnings'].append(f"Infinite values found in features: {inf_features}")
             
-            # Check feature correlation with target
-            if 'aqi_category' in df.columns:
-                correlations = {}
-                for col in df.select_dtypes(include=[np.number]).columns:
-                    if col != 'aqi_category':
-                        corr = df[col].corr(df['aqi_category'])
-                        if not pd.isna(corr):
-                            correlations[col] = corr
-                
-                # Sort by absolute correlation
-                sorted_correlations = sorted(correlations.items(), key=lambda x: abs(x[1]), reverse=True)
-                validation_report['statistics']['top_correlations'] = sorted_correlations[:10]
+            # Check feature correlation with target (removed to prevent data leakage)
+            # Note: AQI correlation analysis removed to prevent using target in feature engineering
             
             self.logger.info(f"Feature validation completed: {validation_report['valid']}")
             print(f"✅ Feature validation completed")

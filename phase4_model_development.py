@@ -110,19 +110,35 @@ class Phase4ModelDevelopment:
             df['timestamp'] = pd.to_datetime(df['timestamp'])
             df = df.sort_values('timestamp').reset_index(drop=True)
             
-            # Determine target column (prefer aqi_numeric; fallback to aqi_category)
-            target_col = 'aqi_numeric' if 'aqi_numeric' in df.columns else 'aqi_category'
-            if target_col not in df.columns:
-                raise ValueError("Target column not found. Expected 'aqi_numeric' or 'aqi_category'.")
+            # AQI CONVERSION: Convert categorical AQI to numerical EPA values
+            print("🔄 Converting AQI from categorical to numerical EPA values...")
+            if 'aqi_category' in df.columns and 'aqi_numeric' not in df.columns:
+                # Convert categorical AQI (1-5) to numerical EPA AQI values
+                aqi_conversion = {
+                    1: 25,   # Good (0-50)
+                    2: 75,   # Moderate (51-100) 
+                    3: 125,  # Unhealthy for Sensitive Groups (101-150)
+                    4: 175,  # Unhealthy (151-200)
+                    5: 250   # Very Unhealthy (201-300)
+                }
+                df['aqi_numeric'] = df['aqi_category'].map(aqi_conversion)
+                print(f"✅ Converted categorical AQI to numerical EPA values (range: {df['aqi_numeric'].min()}-{df['aqi_numeric'].max()})")
+            elif 'aqi_numeric' in df.columns:
+                print(f"✅ Using existing numerical AQI (range: {df['aqi_numeric'].min()}-{df['aqi_numeric'].max()})")
+            else:
+                raise ValueError("No AQI column found. Expected 'aqi_category' or 'aqi_numeric'.")
+            
+            # Always use aqi_numeric as target
+            target_col = 'aqi_numeric'
             
             # Remove any rows with missing target
             initial_len = len(df)
             df = df.dropna(subset=[target_col])
             print(f"📊 Records after removing missing targets: {len(df)} (removed {initial_len - len(df)})")
             
-            # Feature columns (numeric features excluding the target)
+            # Feature columns (numeric features excluding the target and timestamp)
             numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
-            feature_cols = [col for col in numeric_cols if col != target_col]
+            feature_cols = [col for col in numeric_cols if col not in [target_col, 'timestamp']]
             self.feature_names = feature_cols
             
             # Handle missing values in features
@@ -148,31 +164,13 @@ class Phase4ModelDevelopment:
                 df[feature_cols] = df[feature_cols].fillna(0)
             
             print(f"✅ Final dataset: {len(df)} records, {len(feature_cols)} features")
+            print(f"📊 Target AQI range: {df[target_col].min():.1f} - {df[target_col].max():.1f}")
             
             return df, feature_cols, target_col
             
         except Exception as e:
             print(f"❌ Error loading data: {str(e)}")
-            print("💡 Falling back to local data loading...")
-            
-            # Fallback to local data
-            df = pd.read_csv("data_repositories/features/engineered_features.csv")
-            df['timestamp'] = pd.to_datetime(df['timestamp'])
-            df = df.sort_values('timestamp').reset_index(drop=True)
-            target_col = 'aqi_numeric' if 'aqi_numeric' in df.columns else 'aqi_category'
-            df = df.dropna(subset=[target_col])
-            numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
-            feature_cols = [col for col in numeric_cols if col != target_col]
-            df[feature_cols] = df[feature_cols].fillna(method='ffill').fillna(method='bfill')
-            df[feature_cols] = df[feature_cols].fillna(df[feature_cols].median())
-            df[feature_cols] = df[feature_cols].replace([np.inf, -np.inf], np.nan)
-            if df[feature_cols].isnull().sum().sum() > 0:
-                df[feature_cols] = df[feature_cols].fillna(0)
-            
-            self.feature_names = feature_cols
-            print(f"✅ Fallback successful: {len(df)} records, {len(feature_cols)} features")
-            
-            return df, feature_cols, target_col
+            sys.exit(1)
 
     def step2_prepare_data_for_modeling(self, df: pd.DataFrame, feature_cols: List[str], target_col: str):
         """Step 2: Prepare data with proper temporal splits for time series"""
