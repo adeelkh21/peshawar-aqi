@@ -225,7 +225,7 @@ jobs:
             # Run the pipeline
             from phase4_cicd_pipeline_integration import CICDPipelineIntegration
             pipeline = CICDPipelineIntegration()
-            success = pipeline.run_pipeline()
+            success = pipeline.run_complete_pipeline()
             
             if success:
                 logger.info('✅ Phase 4 CI/CD pipeline completed successfully')
