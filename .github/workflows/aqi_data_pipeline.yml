@@ -56,7 +56,16 @@ jobs:
         logging.basicConfig(level=logging.INFO)
         logger = logging.getLogger(__name__)
         
+        # Log environment information
+        logger.info(f'🐍 Python version: {sys.version}')
+        logger.info(f'📁 Working directory: {os.getcwd()}')
+        logger.info(f'📂 Files in current dir: {os.listdir(\".\")}')
+        
         try:
+            # Check pandas version
+            import pandas as pd
+            logger.info(f'📊 Pandas version: {pd.__version__}')
+            
             # Initialize collector
             logger.info('🔄 Initializing data collector...')
             collector = EnhancedDataCollector()
@@ -67,13 +76,39 @@ jobs:
             historical_df = None  # Initialize variable
             
             if historical_exists:
-                import pandas as pd
                 try:
+                    logger.info('📖 Attempting to read historical data file...')
+                    logger.info(f'📄 File path: {merged_file}')
+                    logger.info(f'📏 File size: {os.path.getsize(merged_file)} bytes')
+                    
                     historical_df = pd.read_csv(merged_file)
-                    logger.info(f'📚 Historical data found: {len(historical_df):,} records')
-                    logger.info(f'📅 Historical range: {historical_df.iloc[0]["timestamp"]} to {historical_df.iloc[-1]["timestamp"]}')
+                    logger.info(f'📊 File read successfully. Shape: {historical_df.shape}')
+                    logger.info(f'📋 Columns found: {list(historical_df.columns)}')
+                    
+                    # Validate that the file has the expected structure
+                    if 'timestamp' not in historical_df.columns:
+                        logger.warning('❌ Historical data file missing timestamp column')
+                        logger.warning(f'Available columns: {list(historical_df.columns)}')
+                        historical_exists = False
+                        historical_df = None
+                    elif len(historical_df) == 0:
+                        logger.warning('❌ Historical data file is empty')
+                        historical_exists = False
+                        historical_df = None
+                    else:
+                        logger.info(f'📚 Historical data found: {len(historical_df):,} records')
+                        # Safe access to timestamp values
+                        try:
+                            first_timestamp = historical_df.iloc[0]['timestamp']
+                            last_timestamp = historical_df.iloc[-1]['timestamp']
+                            logger.info(f'📅 Historical range: {first_timestamp} to {last_timestamp}')
+                        except Exception as ts_error:
+                            logger.warning(f'⚠️ Could not access timestamp values: {ts_error}')
+                            logger.warning('Continuing without timestamp range display...')
+                        
                 except Exception as e:
-                    logger.warning(f'Could not read historical data: {e}')
+                    logger.warning(f'❌ Could not read historical data: {e}')
+                    logger.warning(f'Error type: {type(e).__name__}')
                     historical_exists = False
                     historical_df = None  # Reset if reading fails
             else:
@@ -88,7 +123,6 @@ jobs:
                 
                 # Verify data was created and check preservation
                 if os.path.exists(merged_file):
-                    import pandas as pd
                     df = pd.read_csv(merged_file)
                     logger.info(f'📊 Final merged data: {len(df):,} records')
                     
@@ -113,6 +147,9 @@ jobs:
                 
         except Exception as e:
             logger.error(f'❌ Data collection error: {e}')
+            logger.error(f'Error type: {type(e).__name__}')
+            import traceback
+            logger.error(f'Traceback: {traceback.format_exc()}')
             sys.exit(1)
         "
         
