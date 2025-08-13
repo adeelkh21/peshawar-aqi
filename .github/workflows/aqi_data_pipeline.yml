@@ -64,6 +64,7 @@ jobs:
             # Check if historical data exists
             merged_file = 'data_repositories/processed/merged_data.csv'
             historical_exists = os.path.exists(merged_file)
+            historical_df = None  # Initialize variable
             
             if historical_exists:
                 import pandas as pd
@@ -74,6 +75,7 @@ jobs:
                 except Exception as e:
                     logger.warning(f'Could not read historical data: {e}')
                     historical_exists = False
+                    historical_df = None  # Reset if reading fails
             else:
                 logger.info('🆕 No historical data found - will create new dataset')
             
@@ -90,7 +92,7 @@ jobs:
                     df = pd.read_csv(merged_file)
                     logger.info(f'📊 Final merged data: {len(df):,} records')
                     
-                    if historical_exists:
+                    if historical_exists and historical_df is not None:
                         growth = len(df) - len(historical_df)
                         logger.info(f'📈 Data growth: +{growth:,} new records')
                         logger.info(f'💾 Historical data preservation: SUCCESS')
