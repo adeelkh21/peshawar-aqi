@@ -1,0 +1,60 @@
+{
+    "pipeline_timestamp": "20250813_150549",
+    "overall_success": true,
+    "step_results": {
+        "Phase 4 Foundation": {
+            "success": true,
+            "duration": 24.834715366363525
+        },
+        "XGBoost Optimization": {
+            "success": true,
+            "duration": 1540.844177722931
+        },
+        "LightGBM Optimization": {
+            "success": true,
+            "duration": 897.5625612735748
+        },
+        "Final Evaluation & Ensemble": {
+            "success": true,
+            "duration": 522.3071675300598
+        },
+        "Model Deployment": {
+            "success": true,
+            "duration": 0.0994880199432373
+        },
+        "Integration Testing": {
+            "success": true,
+            "duration": 0.10018539428710938
+        }
+    },
+    "performance_summary": {
+        "best_performance": 0.9209184101702261,
+        "best_model": "lightgbm_optimized",
+        "target_achieved": "True",
+        "target_performance": 0.89
+    },
+    "pipeline_config": {
+        "data_loading": {
+            "enabled": true,
+            "use_phase4_methods": true
+        },
+        "feature_engineering": {
+            "enabled": true,
+            "use_phase4_features": true
+        },
+        "model_training": {
+            "enabled": true,
+            "models": [
+                "random_forest",
+                "xgboost",
+                "lightgbm"
+            ],
+            "target_performance": 0.65
+        },
+        "deployment": {
+            "enabled": true,
+            "auto_deploy": true,
+            "rollback_threshold": 0.55
+        }
+    }
+}
