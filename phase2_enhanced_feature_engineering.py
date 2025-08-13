@@ -44,7 +44,7 @@ class EnhancedFeatureEngineer:
         # Feature engineering configuration
         self.feature_config = {
             'rolling_windows': [3, 6, 12, 24],  # Hours
-            'lag_features': [1, 2, 3, 6, 12, 24],  # Hours
+            'lag_features': [1, 2, 3, 6, 12, 24, 36, 54, 66],  # Hours (extended lags enabled with 150+ days history)
             'temporal_features': True,
             'interaction_features': True,
             'statistical_features': True

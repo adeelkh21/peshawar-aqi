@@ -96,9 +96,15 @@ jobs:
                 logger.info('📦 Using only historical data for training...')
                 combined_df = historical_df
             
-            # Sort by timestamp
+            # Sort by timestamp and drop the most recent (partial) hour to avoid incomplete data
             combined_df['timestamp'] = pd.to_datetime(combined_df['timestamp'])
             combined_df = combined_df.sort_values('timestamp')
+            if len(combined_df) > 0:
+                latest_ts = combined_df['timestamp'].max()
+                mask_not_latest = combined_df['timestamp'] < latest_ts
+                dropped = len(combined_df) - mask_not_latest.sum()
+                combined_df = combined_df.loc[mask_not_latest]
+                logger.info(f'🧹 Dropped {dropped} record(s) from the most recent hour to guard against partial data')
             
             # Save combined dataset
             combined_df.to_csv('data_repositories/processed/complete_training_dataset.csv', index=False)
