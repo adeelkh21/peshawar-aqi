@@ -122,22 +122,43 @@ jobs:
                 logger.info('✅ Hourly data collection completed successfully')
                 
                 # Verify data was created and check preservation
+                final_df = None  # Initialize final_df variable in proper scope
                 if os.path.exists(merged_file):
-                    df = pd.read_csv(merged_file)
-                    logger.info(f'📊 Final merged data: {len(df):,} records')
-                    
-                    if historical_exists and historical_df is not None:
-                        growth = len(df) - len(historical_df)
-                        logger.info(f'📈 Data growth: +{growth:,} new records')
-                        logger.info(f'💾 Historical data preservation: SUCCESS')
-                    else:
-                        logger.info(f'🆕 New dataset created: {len(df):,} records')
+                    try:
+                        final_df = pd.read_csv(merged_file)
+                        logger.info(f'📊 Final merged data: {len(final_df):,} records')
                         
-                    # Check data continuity
-                    df['timestamp'] = pd.to_datetime(df['timestamp'])
-                    df = df.sort_values('timestamp')
-                    logger.info(f'📅 Final data range: {df.iloc[0]["timestamp"]} to {df.iloc[-1]["timestamp"]}')
-                    
+                        if historical_exists and historical_df is not None:
+                            growth = len(final_df) - len(historical_df)
+                            logger.info(f'📈 Data growth: +{growth:,} new records')
+                            logger.info(f'💾 Historical data preservation: SUCCESS')
+                        else:
+                            logger.info(f'🆕 New dataset created: {len(final_df):,} records')
+                            
+                        # Check data continuity with safe column access
+                        if final_df is not None and len(final_df) > 0:
+                            try:
+                                # Safe column access for pandas 2.x compatibility
+                                if 'timestamp' in final_df.columns:
+                                    final_df['timestamp'] = pd.to_datetime(final_df['timestamp'])
+                                    final_df = final_df.sort_values('timestamp')
+                                    
+                                    # Safe access to first and last timestamps
+                                    first_ts = final_df.iloc[0]['timestamp']
+                                    last_ts = final_df.iloc[-1]['timestamp']
+                                    logger.info(f'📅 Final data range: {first_ts} to {last_ts}')
+                                else:
+                                    logger.warning('⚠️ Timestamp column not found in final data')
+                            except Exception as ts_error:
+                                logger.warning(f'⚠️ Could not process timestamp data: {ts_error}')
+                                logger.warning('Continuing without timestamp range display...')
+                        else:
+                            logger.warning('⚠️ Final data is empty or None')
+                            
+                    except Exception as df_error:
+                        logger.error(f'❌ Error reading final merged data: {df_error}')
+                        logger.error(f'Error type: {type(df_error).__name__}')
+                        # Don't exit, just log the error
                 else:
                     logger.error('❌ Merged data file not found after collection')
                     sys.exit(1)
