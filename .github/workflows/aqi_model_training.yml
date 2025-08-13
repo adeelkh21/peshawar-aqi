@@ -279,9 +279,9 @@ jobs:
         logging.basicConfig(level=logging.INFO)
         logger = logging.getLogger(__name__)
         
-        logger.info('🤖 Starting model training with incremental learning...')
-        
-                 try:
+                 logger.info('🤖 Starting model training with incremental learning...')
+         
+         try:
              # Load engineered features
              df = pd.read_csv('data_repositories/features/engineered_features.csv')
              logger.info(f'📊 Loaded engineered features: {len(df)} records, {len(df.columns)} features')
