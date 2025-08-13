@@ -1,0 +1,40 @@
+{
+    "pipeline_timestamp": "20250813_063428",
+    "overall_success": false,
+    "step_results": {
+        "Phase 4 Foundation": {
+            "success": false,
+            "duration": 0.44399213790893555
+        }
+    },
+    "performance_summary": {
+        "best_performance": 0.0,
+        "best_model": null,
+        "target_achieved": false,
+        "target_performance": 0.89
+    },
+    "pipeline_config": {
+        "data_loading": {
+            "enabled": true,
+            "use_phase4_methods": true
+        },
+        "feature_engineering": {
+            "enabled": true,
+            "use_phase4_features": true
+        },
+        "model_training": {
+            "enabled": true,
+            "models": [
+                "random_forest",
+                "xgboost",
+                "lightgbm"
+            ],
+            "target_performance": 0.89
+        },
+        "deployment": {
+            "enabled": true,
+            "auto_deploy": true,
+            "rollback_threshold": 0.85
+        }
+    }
+}
