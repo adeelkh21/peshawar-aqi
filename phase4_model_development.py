@@ -46,13 +46,8 @@ except ImportError:
     print("⚠️  TensorFlow not available. Neural networks will be skipped.")
     TENSORFLOW_AVAILABLE = False
 
-# Feature Store Integration
-try:
-    from phase3_feature_store_api import AQIPeshawarFeatureStore
-    FEATURE_STORE_AVAILABLE = True
-except ImportError:
-    print("⚠️  Feature store not available. Using local data.")
-    FEATURE_STORE_AVAILABLE = False
+# Feature Store Integration (disabled in CI/CD; using local engineered features)
+FEATURE_STORE_AVAILABLE = False
 
 # Hyperparameter Optimization
 try:
@@ -100,52 +95,34 @@ class Phase4ModelDevelopment:
         }
 
     def step1_load_data_from_feature_store(self):
-        """Step 1: Load data from Hopsworks feature store"""
-        print("📊 STEP 1: Loading Data from Feature Store")
-        print("-" * 42)
+        """Step 1: Load data prepared by CI (historical + real-time engineered features)."""
+        print("📊 STEP 1: Loading Engineered Features from Repository")
+        print("-" * 55)
         
         try:
-            if FEATURE_STORE_AVAILABLE:
-                print("🔄 Connecting to Hopsworks feature store...")
-                
-                # Set up environment variables if not already set
-                if not os.getenv('HOPSWORKS_API_KEY'):
-                    print("⚠️  Setting up Hopsworks credentials...")
-                    # You may need to set these manually
-                    print("Please ensure HOPSWORKS_API_KEY and HOPSWORKS_PROJECT are set")
-                
-                # Initialize feature store
-                fs = AQIPeshawarFeatureStore()
-                
-                # Get training dataset with all relevant features
-                print("📋 Creating comprehensive training dataset...")
-                categories = ['weather', 'pollution', 'temporal', 'lag_features', 'advanced_features']
-                
-                df = fs.create_training_dataset(
-                    categories=categories,
-                    start_date='2025-03-15',  # Start from clean data
-                    end_date='2025-08-11'     # Up to current date
-                )
-                
-                print(f"✅ Loaded {len(df)} records from feature store")
-                print(f"📈 Features available: {len(df.columns)-2}")  # Exclude timestamp and target
-                
-            else:
-                print("📁 Loading from local feature files...")
-                df = pd.read_csv("data_repositories/features/final_features.csv")
-                print(f"✅ Loaded {len(df)} records from local file")
+            # Always use locally engineered features produced by CI step
+            features_file = "data_repositories/features/engineered_features.csv"
+            print(f"📁 Loading engineered features: {features_file}")
+            df = pd.read_csv(features_file)
+            print(f"✅ Loaded {len(df)} records from engineered features")
             
             # Prepare features and target
             df['timestamp'] = pd.to_datetime(df['timestamp'])
             df = df.sort_values('timestamp').reset_index(drop=True)
             
+            # Determine target column (prefer aqi_numeric; fallback to aqi_category)
+            target_col = 'aqi_numeric' if 'aqi_numeric' in df.columns else 'aqi_category'
+            if target_col not in df.columns:
+                raise ValueError("Target column not found. Expected 'aqi_numeric' or 'aqi_category'.")
+            
             # Remove any rows with missing target
             initial_len = len(df)
-            df = df.dropna(subset=['aqi_numeric'])
+            df = df.dropna(subset=[target_col])
             print(f"📊 Records after removing missing targets: {len(df)} (removed {initial_len - len(df)})")
             
-            # Feature columns (exclude timestamp and target)
-            feature_cols = [col for col in df.columns if col not in ['timestamp', 'aqi_numeric']]
+            # Feature columns (numeric features excluding the target)
+            numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+            feature_cols = [col for col in numeric_cols if col != target_col]
             self.feature_names = feature_cols
             
             # Handle missing values in features
@@ -165,28 +142,29 @@ class Phase4ModelDevelopment:
             
             print(f"✅ Final dataset: {len(df)} records, {len(feature_cols)} features")
             
-            return df, feature_cols
+            return df, feature_cols, target_col
             
         except Exception as e:
             print(f"❌ Error loading data: {str(e)}")
             print("💡 Falling back to local data loading...")
             
             # Fallback to local data
-            df = pd.read_csv("data_repositories/features/final_features.csv")
+            df = pd.read_csv("data_repositories/features/engineered_features.csv")
             df['timestamp'] = pd.to_datetime(df['timestamp'])
             df = df.sort_values('timestamp').reset_index(drop=True)
-            df = df.dropna(subset=['aqi_numeric'])
-            
-            feature_cols = [col for col in df.columns if col not in ['timestamp', 'aqi_numeric']]
+            target_col = 'aqi_numeric' if 'aqi_numeric' in df.columns else 'aqi_category'
+            df = df.dropna(subset=[target_col])
+            numeric_cols = df.select_dtypes(include=[np.number]).columns.tolist()
+            feature_cols = [col for col in numeric_cols if col != target_col]
             df[feature_cols] = df[feature_cols].fillna(method='ffill').fillna(method='bfill')
             df[feature_cols] = df[feature_cols].fillna(df[feature_cols].median())
             
             self.feature_names = feature_cols
             print(f"✅ Fallback successful: {len(df)} records, {len(feature_cols)} features")
             
-            return df, feature_cols
+            return df, feature_cols, target_col
 
-    def step2_prepare_data_for_modeling(self, df: pd.DataFrame, feature_cols: List[str]):
+    def step2_prepare_data_for_modeling(self, df: pd.DataFrame, feature_cols: List[str], target_col: str):
         """Step 2: Prepare data with proper temporal splits for time series"""
         print("\n🔄 STEP 2: Preparing Data for Modeling")
         print("-" * 38)
@@ -197,7 +175,7 @@ class Phase4ModelDevelopment:
             
             # Extract features and target
             X = df[feature_cols].values
-            y = df['aqi_numeric'].values
+            y = df[target_col].values
             timestamps = df['timestamp'].values
             
             # Temporal split (80/20) - CRITICAL for time series
@@ -335,12 +313,12 @@ class Phase4ModelDevelopment:
         print("=" * 40)
         
         # Step 1: Load data
-        df, feature_cols = self.step1_load_data_from_feature_store()
+        df, feature_cols, target_col = self.step1_load_data_from_feature_store()
         if df is None:
             return False
         
         # Step 2: Prepare data
-        if not self.step2_prepare_data_for_modeling(df, feature_cols):
+        if not self.step2_prepare_data_for_modeling(df, feature_cols, target_col):
             return False
         
         # Step 3: Baseline validation
