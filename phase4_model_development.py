@@ -140,6 +140,13 @@ class Phase4ModelDevelopment:
                 print("⚠️  Filling remaining missing values with median...")
                 df[feature_cols] = df[feature_cols].fillna(df[feature_cols].median())
             
+            # Replace infinities and any remaining NaNs as a last resort
+            df[feature_cols] = df[feature_cols].replace([np.inf, -np.inf], np.nan)
+            residual_nans = df[feature_cols].isnull().sum().sum()
+            if residual_nans > 0:
+                print(f"⚠️  Residual NaNs after median fill: {int(residual_nans)} → filling with 0")
+                df[feature_cols] = df[feature_cols].fillna(0)
+            
             print(f"✅ Final dataset: {len(df)} records, {len(feature_cols)} features")
             
             return df, feature_cols, target_col
@@ -158,6 +165,9 @@ class Phase4ModelDevelopment:
             feature_cols = [col for col in numeric_cols if col != target_col]
             df[feature_cols] = df[feature_cols].fillna(method='ffill').fillna(method='bfill')
             df[feature_cols] = df[feature_cols].fillna(df[feature_cols].median())
+            df[feature_cols] = df[feature_cols].replace([np.inf, -np.inf], np.nan)
+            if df[feature_cols].isnull().sum().sum() > 0:
+                df[feature_cols] = df[feature_cols].fillna(0)
             
             self.feature_names = feature_cols
             print(f"✅ Fallback successful: {len(df)} records, {len(feature_cols)} features")
