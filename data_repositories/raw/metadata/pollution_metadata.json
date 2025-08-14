@@ -1,8 +1,8 @@
 {
-    "timestamp": "20250814_151215",
+    "timestamp": "20250814_161438",
     "records": 24,
-    "start_date": "2025-08-13T16:00:00",
-    "end_date": "2025-08-14T15:00:00",
+    "start_date": "2025-08-13T17:00:00",
+    "end_date": "2025-08-14T16:00:00",
     "missing_values": {
         "timestamp": 0,
         "aqi_category": 0,
@@ -16,8 +16,8 @@
         "nh3": 0
     },
     "aqi_distribution": {
-        "4": 21,
-        "3": 3
+        "4": 20,
+        "3": 4
     },
     "validation_status": true,
     "validation_errors": 0,
