@@ -1,5 +1,5 @@
 {
-    "collection_timestamp": "20250816_132101",
+    "collection_timestamp": "20250816_140930",
     "weather_data": {
         "records": 24,
         "features": [
@@ -17,8 +17,8 @@
             "coco"
         ],
         "date_range": {
-            "start": "2025-08-15T14:00:00",
-            "end": "2025-08-16T13:00:00"
+            "start": "2025-08-15T15:00:00",
+            "end": "2025-08-16T14:00:00"
         }
     },
     "pollution_data": {
@@ -36,12 +36,12 @@
             "nh3"
         ],
         "date_range": {
-            "start": "2025-08-15T14:00:00",
-            "end": "2025-08-16T13:00:00"
+            "start": "2025-08-15T15:00:00",
+            "end": "2025-08-16T14:00:00"
         }
     },
     "merged_data": {
-        "records": 98,
+        "records": 99,
         "features": [
             "timestamp",
             "aqi_category",
@@ -72,7 +72,7 @@
         ],
         "date_range": {
             "start": "2025-08-12T12:00:00",
-            "end": "2025-08-16T13:00:00"
+            "end": "2025-08-16T14:00:00"
         }
     }
 }
