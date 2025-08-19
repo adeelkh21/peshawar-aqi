@@ -1,0 +1,13 @@
+{
+    "timestamp": "20250819_071140",
+    "total_records": 163,
+    "new_records": 23,
+    "historical_records": 140,
+    "start_date": "2025-08-12T12:00:00",
+    "end_date": "2025-08-19T06:00:00",
+    "data_growth": 23,
+    "validation_status": true,
+    "validation_errors": 0,
+    "validation_warnings": 0,
+    "preservation_status": "success"
+}
