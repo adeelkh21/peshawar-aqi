@@ -3,28 +3,28 @@
     "errors": [],
     "warnings": [
         "High missing values: {'snow': 1.0, 'wpgt': 1.0, 'tsun': 1.0}",
-        "Data is 3.6 hours old (max: 2)"
+        "Data is 4.2 hours old (max: 2)"
     ],
     "statistics": {
-        "total_records": 21,
+        "total_records": 20,
         "missing_values": {
             "timestamp": 0,
             "temperature": 0,
             "dew_point": 0,
             "relative_humidity": 0,
             "precipitation": 0,
-            "snow": 21,
+            "snow": 20,
             "wind_direction": 0,
             "wind_speed": 0,
-            "wpgt": 21,
+            "wpgt": 20,
             "pressure": 0,
-            "tsun": 21,
+            "tsun": 20,
             "coco": 0
         },
         "data_range": {
-            "start": "2025-08-18 04:00:00",
+            "start": "2025-08-18 05:00:00",
             "end": "2025-08-19 00:00:00"
         }
     },
-    "timestamp": "2025-08-19T03:37:34.373905"
+    "timestamp": "2025-08-19T04:14:36.686484"
 }

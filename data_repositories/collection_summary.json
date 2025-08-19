@@ -1,7 +1,7 @@
 {
-    "collection_timestamp": "20250819_033733",
+    "collection_timestamp": "20250819_041435",
     "weather_data": {
-        "records": 21,
+        "records": 20,
         "features": [
             "timestamp",
             "temperature",
@@ -17,7 +17,7 @@
             "coco"
         ],
         "date_range": {
-            "start": "2025-08-18T04:00:00",
+            "start": "2025-08-18T05:00:00",
             "end": "2025-08-19T00:00:00"
         }
     },
@@ -36,8 +36,8 @@
             "nh3"
         ],
         "date_range": {
-            "start": "2025-08-18T04:00:00",
-            "end": "2025-08-19T03:00:00"
+            "start": "2025-08-18T05:00:00",
+            "end": "2025-08-19T04:00:00"
         }
     },
     "merged_data": {
