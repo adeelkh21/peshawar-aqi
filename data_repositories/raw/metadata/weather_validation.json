@@ -2,28 +2,29 @@
     "valid": true,
     "errors": [],
     "warnings": [
-        "High missing values: {'temperature': 0.6521739130434783, 'dew_point': 0.6521739130434783, 'relative_humidity': 0.6521739130434783, 'precipitation': 0.782608695652174, 'snow': 1.0, 'wind_direction': 0.6521739130434783, 'wind_speed': 0.6521739130434783, 'wpgt': 1.0, 'pressure': 0.6521739130434783, 'tsun': 1.0, 'coco': 0.782608695652174}"
+        "High missing values: {'temperature': 0.6818181818181818, 'dew_point': 0.6818181818181818, 'relative_humidity': 0.6818181818181818, 'precipitation': 0.8181818181818182, 'snow': 1.0, 'wind_direction': 0.6818181818181818, 'wind_speed': 0.6818181818181818, 'wpgt': 1.0, 'pressure': 0.6818181818181818, 'tsun': 1.0, 'coco': 0.8181818181818182}",
+        "Data is 2.2 hours old (max: 2)"
     ],
     "statistics": {
-        "total_records": 23,
+        "total_records": 22,
         "missing_values": {
             "timestamp": 0,
             "temperature": 15,
             "dew_point": 15,
             "relative_humidity": 15,
             "precipitation": 18,
-            "snow": 23,
+            "snow": 22,
             "wind_direction": 15,
             "wind_speed": 15,
-            "wpgt": 23,
+            "wpgt": 22,
             "pressure": 15,
-            "tsun": 23,
+            "tsun": 22,
             "coco": 18
         },
         "data_range": {
-            "start": "2025-08-18 20:00:00",
+            "start": "2025-08-18 21:00:00",
             "end": "2025-08-19 18:00:00"
         }
     },
-    "timestamp": "2025-08-19T19:08:49.568050"
+    "timestamp": "2025-08-19T20:12:17.217312"
 }
