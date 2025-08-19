@@ -1,23 +1,23 @@
 {
-    "timestamp": "20250819_051158",
-    "records": 19,
-    "start_date": "2025-08-18T06:00:00",
-    "end_date": "2025-08-19T00:00:00",
+    "timestamp": "20250819_061648",
+    "records": 24,
+    "start_date": "2025-08-18T07:00:00",
+    "end_date": "2025-08-19T06:00:00",
     "missing_values": {
         "timestamp": 0,
-        "temperature": 0,
-        "dew_point": 0,
-        "relative_humidity": 0,
-        "precipitation": 0,
-        "snow": 19,
-        "wind_direction": 0,
-        "wind_speed": 0,
-        "wpgt": 19,
-        "pressure": 0,
-        "tsun": 19,
-        "coco": 0
+        "temperature": 5,
+        "dew_point": 5,
+        "relative_humidity": 5,
+        "precipitation": 6,
+        "snow": 24,
+        "wind_direction": 5,
+        "wind_speed": 5,
+        "wpgt": 24,
+        "pressure": 5,
+        "tsun": 24,
+        "coco": 6
     },
-    "validation_status": false,
-    "validation_errors": 1,
-    "validation_warnings": 2
+    "validation_status": true,
+    "validation_errors": 0,
+    "validation_warnings": 1
 }

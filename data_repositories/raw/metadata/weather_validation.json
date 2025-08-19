@@ -1,32 +1,29 @@
 {
-    "valid": false,
-    "errors": [
-        "Insufficient records: 19 < 20"
-    ],
+    "valid": true,
+    "errors": [],
     "warnings": [
-        "High missing values: {'snow': 1.0, 'wpgt': 1.0, 'tsun': 1.0}",
-        "Data is 5.2 hours old (max: 2)"
+        "High missing values: {'snow': 1.0, 'wpgt': 1.0, 'tsun': 1.0}"
     ],
     "statistics": {
-        "total_records": 19,
+        "total_records": 24,
         "missing_values": {
             "timestamp": 0,
-            "temperature": 0,
-            "dew_point": 0,
-            "relative_humidity": 0,
-            "precipitation": 0,
-            "snow": 19,
-            "wind_direction": 0,
-            "wind_speed": 0,
-            "wpgt": 19,
-            "pressure": 0,
-            "tsun": 19,
-            "coco": 0
+            "temperature": 5,
+            "dew_point": 5,
+            "relative_humidity": 5,
+            "precipitation": 6,
+            "snow": 24,
+            "wind_direction": 5,
+            "wind_speed": 5,
+            "wpgt": 24,
+            "pressure": 5,
+            "tsun": 24,
+            "coco": 6
         },
         "data_range": {
-            "start": "2025-08-18 06:00:00",
-            "end": "2025-08-19 00:00:00"
+            "start": "2025-08-18 07:00:00",
+            "end": "2025-08-19 06:00:00"
         }
     },
-    "timestamp": "2025-08-19T05:11:59.121521"
+    "timestamp": "2025-08-19T06:16:49.342175"
 }
