@@ -1,8 +1,8 @@
 {
-    "timestamp": "20250820_051204",
+    "timestamp": "20250820_061703",
     "records": 19,
-    "start_date": "2025-08-19T06:00:00",
-    "end_date": "2025-08-20T00:00:00",
+    "start_date": "2025-08-19T12:00:00",
+    "end_date": "2025-08-20T06:00:00",
     "missing_values": {
         "timestamp": 0,
         "temperature": 15,
@@ -19,5 +19,5 @@
     },
     "validation_status": false,
     "validation_errors": 1,
-    "validation_warnings": 2
+    "validation_warnings": 1
 }
