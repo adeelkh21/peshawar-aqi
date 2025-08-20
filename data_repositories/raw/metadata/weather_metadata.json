@@ -1,5 +1,5 @@
 {
-    "timestamp": "20250820_190857",
+    "timestamp": "20250820_201220",
     "records": 19,
     "start_date": "2025-08-20T00:00:00",
     "end_date": "2025-08-20T18:00:00",
@@ -19,5 +19,5 @@
     },
     "validation_status": false,
     "validation_errors": 1,
-    "validation_warnings": 1
+    "validation_warnings": 2
 }
