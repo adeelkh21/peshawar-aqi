@@ -1,5 +1,5 @@
 {
-    "collection_timestamp": "20250820_004911",
+    "collection_timestamp": "20250820_022603",
     "weather_data": {
         "records": 19,
         "features": [
@@ -36,8 +36,8 @@
             "nh3"
         ],
         "date_range": {
-            "start": "2025-08-19T01:00:00",
-            "end": "2025-08-20T00:00:00"
+            "start": "2025-08-19T03:00:00",
+            "end": "2025-08-20T02:00:00"
         }
     },
     "merged_data": {
