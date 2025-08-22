@@ -4,7 +4,8 @@
         "Insufficient records: 19 < 20"
     ],
     "warnings": [
-        "High missing values: {'temperature': 0.7894736842105263, 'dew_point': 0.7894736842105263, 'relative_humidity': 0.7894736842105263, 'precipitation': 1.0, 'snow': 1.0, 'wind_direction': 0.7894736842105263, 'wind_speed': 0.7894736842105263, 'wpgt': 1.0, 'pressure': 0.7894736842105263, 'tsun': 1.0, 'coco': 1.0}"
+        "High missing values: {'temperature': 0.7894736842105263, 'dew_point': 0.7894736842105263, 'relative_humidity': 0.7894736842105263, 'precipitation': 1.0, 'snow': 1.0, 'wind_direction': 0.7894736842105263, 'wind_speed': 0.7894736842105263, 'wpgt': 1.0, 'pressure': 0.7894736842105263, 'tsun': 1.0, 'coco': 1.0}",
+        "Data is 2.4 hours old (max: 2)"
     ],
     "statistics": {
         "total_records": 19,
@@ -27,5 +28,5 @@
             "end": "2025-08-22 00:00:00"
         }
     },
-    "timestamp": "2025-08-22T00:50:03.101866"
+    "timestamp": "2025-08-22T02:25:51.831662"
 }
