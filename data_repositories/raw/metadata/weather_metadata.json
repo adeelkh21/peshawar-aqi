@@ -1,8 +1,8 @@
 {
-    "timestamp": "20250824_151006",
+    "timestamp": "20250824_161131",
     "records": 24,
-    "start_date": "2025-08-23T16:00:00",
-    "end_date": "2025-08-24T15:00:00",
+    "start_date": "2025-08-23T17:00:00",
+    "end_date": "2025-08-24T16:00:00",
     "missing_values": {
         "timestamp": 0,
         "temperature": 0,
